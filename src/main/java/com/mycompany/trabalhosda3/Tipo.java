@@ -11,17 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-/**
- *
- * @author 1271919682
- */
 public abstract class Tipo {
     protected String porta;
     protected String nome;
     protected List<Processo> processos;
     protected ServidorSocket serverSocket;
+    protected Processo servidor = null;
     
-        protected void iniciarConexao(){
+    protected void iniciarConexao(){
         try{
             serverSocket = new ServidorSocket(Integer.valueOf(this.porta), this.nome);
             Thread thread = new Thread(serverSocket);
@@ -39,13 +36,13 @@ public abstract class Tipo {
         Properties prop = new Properties();
         try(FileInputStream fis = new FileInputStream("app.config")){
             prop.load(fis);
-            }catch(FileNotFoundException ex){
-                System.err.println("Arquivo de configuração não encontrado");
-                System.exit(0);
-            }catch(IOException ex){
-                ex.printStackTrace();
-                System.exit(0);
-            }
+        }catch(FileNotFoundException ex){
+            System.err.println("Arquivo de configuração não encontrado");
+            System.exit(0);
+        }catch(IOException ex){
+            ex.printStackTrace();
+            System.exit(0);
+        }
         
         this.iniciarConexao();
         
@@ -57,7 +54,17 @@ public abstract class Tipo {
             String identificador = prop.getProperty("app.processo." + i + ".identificador");
             String host = prop.getProperty("app.processo." + i + ".host");
             String port = prop.getProperty("app.processo." + i + ".port");
+            
+            if(identificador.equals("") || host.equals("") || port.equals("")) continue;
+            
+            if(this.nome.equals(identificador)) continue;
+              
             Processo processo = new Processo(identificador, host, Integer.valueOf(port));
+            
+            if(identificador.equals("servidor") && this.servidor == null){
+                this.servidor = processo;
+            }
+            
             processos.add(processo);
         }
         

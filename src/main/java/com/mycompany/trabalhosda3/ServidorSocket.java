@@ -8,10 +8,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- *
- * @author 1271919682
- */
 public class ServidorSocket implements Runnable {
     
     private ServerSocket serverSocket;

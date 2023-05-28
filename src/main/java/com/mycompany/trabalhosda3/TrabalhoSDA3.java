@@ -4,10 +4,10 @@
 
 package com.mycompany.trabalhosda3;
 
-/**
- *
- * @author willian
- */
+import com.mycompany.trabalhosda3.entities.Gerente;
+import com.mycompany.trabalhosda3.entities.Servidor;
+import com.mycompany.trabalhosda3.entities.Vendedor;
+
 public class TrabalhoSDA3 {
 
       public static void main(String[] args) {
@@ -21,13 +21,16 @@ public class TrabalhoSDA3 {
         String porta = args[2];
         System.out.println("Olá, eu sou o programa do tipo " + tipo + " com o identificador " + nome);
         
-        if (tipo.equals("produtor")){
-            Produtor p = new Produtor(porta, nome);
-            p.run();
-        }else if(tipo.equals("consumidor")){
-            Consumidor c = new Consumidor(porta, nome);
-            c.run();
-        } else {
+        if (tipo.equals("vendedor")){
+            Vendedor vendedor = new Vendedor(porta, nome);
+            vendedor.run();
+        }else if(tipo.equals("gerente")){
+            Gerente gerente = new Gerente(porta, nome);
+            gerente.run();
+        }else if(tipo.equals("servidor")){
+            Servidor servidor = new Servidor(porta,nome);
+            servidor.run();
+        }else {
             System.out.println("Tipo não válido!");
         }
     }
