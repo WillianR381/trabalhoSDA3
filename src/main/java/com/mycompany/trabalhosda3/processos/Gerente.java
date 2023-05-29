@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.trabalhosda3.entities;
+package com.mycompany.trabalhosda3.processos;
 
 import com.mycompany.trabalhosda3.ClienteSocket;
 import com.mycompany.trabalhosda3.Processo;
@@ -13,12 +13,11 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Vendedor extends Tipo {
-    public Vendedor(String porta, String nome){
+public class Gerente extends Tipo {
+    public Gerente(String porta, String nome){
         super(porta, nome);
     }
-
-
+    
     public void run(){
         while(true){
            try{
@@ -26,14 +25,13 @@ public class Vendedor extends Tipo {
                        ClienteSocket socket = new ClienteSocket(servidor.getHost(), servidor.getPort());
                        Scanner scan = new Scanner(System.in);
                        
-                       socket.enviar("venda");
+                       socket.enviar("busca");
                        
                        String resposta = socket.receber();
                        System.out.println(resposta);
                        
                        String mensagem = scan.nextLine();
                        socket.enviar(mensagem);
-                       scan.close();
                        
                        resposta = socket.receber();
                        System.out.println(resposta);
@@ -41,10 +39,10 @@ public class Vendedor extends Tipo {
                    } catch(IOException ex){
                        Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + servidor.getIdentificador() + ": " + ex.getMessage());
                    }
-               /*for(Processo processo : processos){
+              /* for(Processo processo : processos){
                    try{
                        ClienteSocket socket = new ClienteSocket(processo.getHost(), processo.getPort());
-                       socket.enviar("Olá, eu sou o processo produtor " + this.nome);
+                       socket.enviar("Olá, eu sou o processo consumidor " + this.nome);
                        String resposta = socket.receber();
                        System.out.println("Resposta: " + resposta);
                    } catch(IOException ex){
@@ -53,12 +51,10 @@ public class Vendedor extends Tipo {
                }*/
                
                System.out.println("Vou dormir!");
-               Thread.sleep(1000*15);
-               System.out.println("Acordei");
-               Thread.sleep(1000*15);
+               Thread.sleep(1000*3);
             }catch(InterruptedException ex){
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
             }
         }
-    }
+    }   
 }
