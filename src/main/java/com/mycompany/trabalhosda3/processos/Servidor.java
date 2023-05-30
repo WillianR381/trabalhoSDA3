@@ -18,7 +18,7 @@ public class Servidor extends Tipo {
     }
     
     public void run(){
-        while(true){
+       /* while(true){
            try{
               for(Processo processo : processos){
                    try{
@@ -40,6 +40,6 @@ public class Servidor extends Tipo {
             }catch(InterruptedException ex){
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
             }
-        }
+        }*/
     } 
 }

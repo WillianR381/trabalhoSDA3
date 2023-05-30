@@ -1,6 +1,7 @@
 com/mycompany/trabalhosda3/processos/Servidor.class
 com/mycompany/trabalhosda3/ClienteHandler.class
 com/mycompany/trabalhosda3/utils/Data.class
+com/mycompany/trabalhosda3/utils/ValorMonetario.class
 com/mycompany/trabalhosda3/config/Database.class
 com/mycompany/trabalhosda3/servicos/ProdutoService.class
 com/mycompany/trabalhosda3/servicos/VendedorService.class
@@ -8,6 +9,7 @@ com/mycompany/trabalhosda3/ServidorSocket.class
 com/mycompany/trabalhosda3/processos/Gerente.class
 com/mycompany/trabalhosda3/Processo.class
 com/mycompany/trabalhosda3/Tipo.class
+com/mycompany/trabalhosda3/utils/Impressao.class
 com/mycompany/trabalhosda3/ClienteSocket.class
 com/mycompany/trabalhosda3/TrabalhoSDA3.class
 com/mycompany/trabalhosda3/processos/Vendedor.class

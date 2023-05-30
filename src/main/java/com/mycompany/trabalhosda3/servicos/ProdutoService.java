@@ -6,6 +6,7 @@ package com.mycompany.trabalhosda3.servicos;
 
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import com.mycompany.trabalhosda3.config.Database;
+import com.mycompany.trabalhosda3.utils.ValorMonetario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +30,7 @@ public class ProdutoService {
     public String totalVendas(String nomeProduto) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String status = "Error";
+        String resposta = "Error";
         try {
             String pegaTotalVendas = "SELECT p.nome AS produto, SUM(vs.valor) AS total_vendas, p.id AS produto_id, vs.data_venda AS data_venda \n"
                     + "FROM produtos p \n"
@@ -40,7 +41,8 @@ public class ProdutoService {
             pstmt.setString(1, nomeProduto);
             rs = pstmt.executeQuery();
 
-            status = "Produto: " + rs.getString("produto") + " tem o total de vendas de  " + rs.getDouble("total_vendas") + ".";
+            String totalVendas = ValorMonetario.formatar(rs.getDouble("total_vendas"));
+            resposta = "Produto: " + rs.getString("produto") + " tem o total de vendas de  " + totalVendas;
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -49,13 +51,11 @@ public class ProdutoService {
             try {
                 rs.close();
                 pstmt.close();
-
             } catch (SQLException ex) {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        return status;
+        return resposta;
     }
 
     public String totalVendasPorPeriodo(String dataInicial, String dataFinal) {
@@ -71,14 +71,19 @@ public class ProdutoService {
                     + "FROM produtos p \n"
                     + "JOIN vendas vs ON p.id = vs.produto_id \n"
                     + "WHERE vs.data_venda  BETWEEN ? AND ? \n"
-                    + "GROUP BY p.nome";
-
+                    + "GROUP BY p.nome \n"
+                    + "ORDER BY vs.valor DESC";
+                    
             pstmt = this.conexaoDb.prepareStatement(pegaTotalVendasPorPeriodo);
             pstmt.setString(1, dataInicial);
             pstmt.setString(2, dataFinal);
             rs = pstmt.executeQuery();
-
-            resposta = "OK";
+            
+            resposta = "";
+            while(rs.next()){
+                String totalVendas = ValorMonetario.formatar(rs.getDouble("total_vendas"));
+                resposta += "Produto: " + rs.getString("produto") + " tem o total de vendas de " + totalVendas + "<novaLinha>" ;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -92,7 +97,6 @@ public class ProdutoService {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         return resposta;
     }
 
@@ -110,8 +114,9 @@ public class ProdutoService {
 
             pstmt = this.conexaoDb.prepareStatement(pegaTotalVendasPorPeriodo);
             rs = pstmt.executeQuery();
-
-            resposta = "O produto mais vendido é : " + rs.getString("produto") + " no total de  : R$" + rs.getDouble("total_vendas");
+            
+            String totalVendas = ValorMonetario.formatar(rs.getDouble("total_vendas"));
+            resposta = "O produto mais vendido é : " + rs.getString("produto") + " no total de " + totalVendas;
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -125,7 +130,6 @@ public class ProdutoService {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         return resposta;
     }
 

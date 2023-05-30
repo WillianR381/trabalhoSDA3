@@ -1,4 +1,5 @@
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/ClienteSocket.java
+/home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/utils/Impressao.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/ClienteHandler.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/TrabalhoSDA3.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/processos/Gerente.java
@@ -8,6 +9,7 @@
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/servicos/VendedorService.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/processos/Vendedor.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/config/Database.java
+/home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/utils/ValorMonetario.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/processos/Servidor.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/utils/Data.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/servicos/ProdutoService.java

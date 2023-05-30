@@ -6,6 +6,7 @@ package com.mycompany.trabalhosda3.servicos;
 
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import com.mycompany.trabalhosda3.config.Database;
+import com.mycompany.trabalhosda3.utils.ValorMonetario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -111,7 +112,8 @@ public class VendedorService {
                 return resposta;
             }
             
-            resposta = "Vendedor: " + rs.getString("vendedor") + " tem o total de vendas de  " + rs.getDouble("total_vendas") ;
+            String totalVendas = ValorMonetario.formatar(rs.getDouble("total_vendas"));
+            resposta = "Vendedor: " + rs.getString("vendedor") + " tem o total de vendas de  " + totalVendas ;
             
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);

@@ -43,7 +43,7 @@ public abstract class Tipo {
             ex.printStackTrace();
             System.exit(0);
         }
-        
+               
         this.iniciarConexao();
         
         System.out.println(prop.getProperty("app.name"));
@@ -69,7 +69,7 @@ public abstract class Tipo {
         }
         
     }
-    
+       
     public abstract void run();
     
 }

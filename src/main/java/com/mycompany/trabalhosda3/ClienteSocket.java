@@ -10,23 +10,23 @@ public class ClienteSocket {
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
-    
-    public ClienteSocket(String host, Integer port) throws IOException{
+
+    public ClienteSocket(String host, Integer port) throws IOException {
         this.socket = new Socket(host, port);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new PrintWriter(socket.getOutputStream(),true);
+        this.out = new PrintWriter(socket.getOutputStream(), true);
     }
-    
-    public void enviar(String msg){
+
+    public void enviar(String msg) {
         out.println(msg);
     }
-    
+
     public String receber() throws IOException{
         return in.readLine();
     }
-    
-    public void fechar() throws IOException{
+
+    public void fechar() throws IOException {
         in.close();
         out.close();
-    }  
+    }
 }

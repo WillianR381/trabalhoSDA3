@@ -23,7 +23,6 @@ public class ServidorSocket implements Runnable {
     public void run(){
         try {
             while(true){
-                
                 Socket socket = serverSocket.accept();
                 
                 Thread thread = new Thread(new ClienteHandler(socket, this.identificador));
