@@ -11,8 +11,9 @@ package com.mycompany.trabalhosda3.utils;
 public class Impressao {
     
     
-    public static void noTerminal(String s){
-        String[] linhas = s.split("<novaLinha>");
+    public static void noTerminal(String stringParaImprimir){
+        if(stringParaImprimir == null) return;
+        String[] linhas = stringParaImprimir.split("<novaLinha>");
         for(String linha : linhas){
             System.out.println(linha);
         }

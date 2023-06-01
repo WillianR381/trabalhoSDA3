@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.trabalhosda3;
-import java.lang.reflect.Field;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

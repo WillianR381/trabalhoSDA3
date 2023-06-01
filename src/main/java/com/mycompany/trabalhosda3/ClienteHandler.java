@@ -50,21 +50,14 @@ public class ClienteHandler implements Runnable {
                     throw new IllegalArgumentException("Preencher com <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda>");
                 }
 
-                String nomeVendedor = variaveisEntrada[0];
-                String nomeProdutor = variaveisEntrada[1];
+                String nomeVendedor = variaveisEntrada[0].toLowerCase();
+                String nomeProduto = variaveisEntrada[1].toLowerCase();
                 String dataVenda = variaveisEntrada[2];
-                String valorVendaString = variaveisEntrada[3];
-
-                if (nomeVendedor.equals("") || nomeProdutor.equals("") || dataVenda.equals("") || valorVendaString.equals("")) {
-                    throw new IllegalArgumentException("Variável vazia");
-                }
-
-                VendedorService vendedorService = new VendedorService();
-
                 Double valorVenda = Double.valueOf(variaveisEntrada[3]);
                 dataVenda = Data.formataParaAnoMesDia(dataVenda);
 
-                mensagem = vendedorService.realizaVenda(nomeVendedor, nomeProdutor, dataVenda, valorVenda);
+                VendedorService vendedorService = new VendedorService();
+                mensagem = vendedorService.realizaVenda(nomeVendedor, nomeProduto, dataVenda, valorVenda);
                 out.println(mensagem);
 
             } else if (resposta.equals("busca")) {
@@ -92,8 +85,9 @@ public class ClienteHandler implements Runnable {
                             throw new IllegalArgumentException("Preencher com <nomeVendedor>");
                         }
                         VendedorService vendedorService = new VendedorService();
-                        String nomeVendedor = variaveisEntrada[1];
+                        String nomeVendedor = variaveisEntrada[1].toLowerCase();
                         mensagem = vendedorService.totalVendas(nomeVendedor);
+
                         break;
                     case "2":
                         if (variaveisEntrada.length < 2) {
@@ -101,8 +95,9 @@ public class ClienteHandler implements Runnable {
                         }
 
                         ProdutoService produtoService = new ProdutoService();
-                        String nomeProduto = variaveisEntrada[1];
+                        String nomeProduto = variaveisEntrada[1].toLowerCase();
                         mensagem = produtoService.totalVendas(nomeProduto);
+
                         break;
                     case "3":
                         if (variaveisEntrada.length < 3) {
@@ -116,19 +111,28 @@ public class ClienteHandler implements Runnable {
                         dataInicial = Data.formataParaAnoMesDia(dataInicial);
                         dataFinal = Data.formataParaAnoMesDia(dataFinal);
                         mensagem = produtoService1.totalVendasPorPeriodo(dataInicial, dataFinal);
+
                         break;
                     case "4":
                         VendedorService vendedorService1 = new VendedorService();
                         mensagem = vendedorService1.melhorVendedor();
+
                         break;
                     case "5":
                         ProdutoService produtoService2 = new ProdutoService();
                         mensagem = produtoService2.melhorProduto();
+
                         break;
                     default:
                         mensagem = "Operação inválida";
                 }
                 out.println(mensagem);
+            } else if (resposta.equals("mudarServidor")) {
+                System.out.println("Cliente conectado: " + socket.getInetAddress().getHostAddress());
+                resposta = in.readLine();
+                System.out.println("Mensagem recebida: " + resposta);
+                out.println("Oi! E eu sou o processo " + this.identificador);
+                in.close();
             }
             in.close();
         } catch (IllegalArgumentException e) {
@@ -152,4 +156,5 @@ public class ClienteHandler implements Runnable {
             }
         }
     }
+
 }

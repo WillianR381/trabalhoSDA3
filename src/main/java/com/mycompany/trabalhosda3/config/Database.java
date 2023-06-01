@@ -16,7 +16,7 @@ public class Database {
 
         if (conexaoDb == null) {
             try {
-                this.conexaoDb = DriverManager.getConnection("jdbc:sqlite:src/main/java/com/mycompany/trabalhosda3/banco.db");
+                this.conexaoDb = DriverManager.getConnection("jdbc:sqlite:banco.db");
                 System.out.println("Conexão realizada !!!!");
             } catch (SQLException ex) {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
@@ -82,7 +82,7 @@ public class Database {
             Statement stmt = this.conexaoDb.createStatement();
 
             stmt.executeUpdate("INSERT INTO vendedores (nome) VALUES ('carlos')");
-            stmt.executeUpdate("INSERT INTO vendedores (nome) VALUES ('coberto')");
+            stmt.executeUpdate("INSERT INTO vendedores (nome) VALUES ('roberto')");
             stmt.executeUpdate("INSERT INTO vendedores (nome) VALUES ('junior')");
 
             stmt.executeUpdate("INSERT INTO produtos (nome) VALUES ('arroz');");
@@ -94,6 +94,7 @@ public class Database {
             stmt.executeUpdate("INSERT INTO vendas (vendedor_id, produto_id, data_venda, valor) VALUES (1, 2, '2023-05-02', 200.00);");
             stmt.executeUpdate("INSERT INTO vendas (vendedor_id, produto_id, data_venda, valor) VALUES (2, 3, '2023-05-03', 250.00);");
             stmt.executeUpdate("INSERT INTO vendas (vendedor_id, produto_id, data_venda, valor) VALUES (3, 3, '2023-05-03', 300.00);");
+            stmt.executeUpdate("INSERT INTO vendas (vendedor_id, produto_id, data_venda, valor) VALUES (3, 2, '2023-12-03', 350.00);");
 
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);

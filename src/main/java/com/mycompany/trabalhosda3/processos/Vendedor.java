@@ -5,6 +5,7 @@
 package com.mycompany.trabalhosda3.processos;
 
 import com.mycompany.trabalhosda3.ClienteSocket;
+import com.mycompany.trabalhosda3.Processo;
 import com.mycompany.trabalhosda3.Tipo;
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import com.mycompany.trabalhosda3.utils.Impressao;
@@ -14,35 +15,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Vendedor extends Tipo {
-    public Vendedor(String porta, String nome){
+
+    public Vendedor(String porta, String nome) {
         super(porta, nome);
     }
 
+    public void run() {
+        while (true) {
+            try {
+                try {
+                    ClienteSocket socket = new ClienteSocket(servidor.getHost(), servidor.getPort());
+                    Scanner scan = new Scanner(System.in);
 
-    public void run(){
-        while(true){
-           try{
-                try{
-                       ClienteSocket socket = new ClienteSocket(servidor.getHost(), servidor.getPort());
-                       Scanner scan = new Scanner(System.in);
-                       
-                       socket.enviar("venda");
-                       
-                       String resposta = socket.receber();
-                       Impressao.noTerminal(resposta);
-                       
-                       String mensagem = scan.nextLine();
-                       socket.enviar(mensagem);
-                       
-                       resposta = socket.receber();
-                       Impressao.noTerminal(resposta);
-                                              
-                   } catch(IOException ex){
-                       Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + servidor.getIdentificador() + ": " + ex.getMessage());
-                   }
-               System.out.println("Vou dormir!");
-               Thread.sleep(1000*10);
-            }catch(InterruptedException ex){
+                    socket.enviar("venda");
+
+                    String resposta = socket.receber();
+                    Impressao.noTerminal(resposta);
+
+                    String mensagem = scan.nextLine();
+                    socket.enviar(mensagem);
+
+                    resposta = socket.receber();
+                    Impressao.noTerminal(resposta);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + servidor.getIdentificador() + ": " + ex.getMessage());
+                    comunicaOutrosProcesso();
+                }
+                System.out.println("Vou dormir!");
+                Thread.sleep(1000 * 10);
+            } catch (InterruptedException ex) {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
             }
         }

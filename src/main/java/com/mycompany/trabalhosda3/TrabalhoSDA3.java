@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.trabalhosda3;
 
 import com.mycompany.trabalhosda3.config.Database;
@@ -12,24 +11,28 @@ import java.io.File;
 
 public class TrabalhoSDA3 {
 
-      public static void main(String[] args) {
-        if(args.length != 3){
+    public static void main(String[] args) {
+        if (args.length != 3) {
             System.out.println("Para executar o programa: <tipo> <identificador> <porta>");
             System.exit(0);
         }
-        
-        File arquivoTemporario = new File("src/main/java/com/mycompany/trabalhosda3/banco.db");
+
+        File arquivoTemporario = new File("banco.db");
         boolean existe = arquivoTemporario.exists();
-        
-        if(!existe){
+
+        if (!existe) {
+            System.out.println("Iniciando a criação do banco");
             Database.iniciaBancoDados();
         }
-        
+
         String tipo = args[0];
         String nome = args[1];
         String porta = args[2];
         System.out.println("Olá, eu sou o processo do tipo " + tipo + " com o identificador " + nome);
-        
+
+        long pid = ProcessHandle.current().pid();
+
+        System.out.println("Pid" + pid);
         switch (tipo) {
             case "vendedor":
                 Vendedor vendedor = new Vendedor(porta, nome);
@@ -40,7 +43,7 @@ public class TrabalhoSDA3 {
                 gerente.run();
                 break;
             case "servidor":
-                Servidor servidor = new Servidor(porta,nome);
+                Servidor servidor = new Servidor(porta, nome);
                 //servidor.run();
                 break;
             default:

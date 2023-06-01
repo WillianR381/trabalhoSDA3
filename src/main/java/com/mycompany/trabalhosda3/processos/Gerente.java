@@ -40,6 +40,7 @@ public class Gerente extends Tipo {
 
                 } catch (IOException ex) {
                     Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + servidor.getIdentificador() + ": " + ex.getMessage());
+                    comunicaOutrosProcesso();
                 }
 
                 System.out.println("Vou dormir!");
