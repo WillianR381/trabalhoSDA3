@@ -3,15 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.trabalhosda3;
-import java.lang.reflect.Field;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- *
- * @author 1271919682
- */
 public class ServidorSocket implements Runnable {
     
     private ServerSocket serverSocket;
@@ -27,7 +22,6 @@ public class ServidorSocket implements Runnable {
     public void run(){
         try {
             while(true){
-                
                 Socket socket = serverSocket.accept();
                 
                 Thread thread = new Thread(new ClienteHandler(socket, this.identificador));
