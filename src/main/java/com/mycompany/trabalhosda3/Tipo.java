@@ -17,24 +17,15 @@ public abstract class Tipo {
 
     protected String porta;
     protected String nome;
-    protected List<Processo> processos;
+    protected String identificador;
     protected ServidorSocket serverSocket;
-    protected Processo servidor = null;
-    protected Processo me = null; 
 
-    protected void iniciarConexao() {
-        try {
-            serverSocket = new ServidorSocket(Integer.valueOf(this.porta), this.nome);
-            Thread thread = new Thread(serverSocket);
-            thread.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public Tipo(String porta, String nome) {
+    public Tipo(String porta, String nome, String identificador) {
         this.porta = porta;
         this.nome = nome;
+        this.identificador = identificador;
+
         System.out.println("Estou escutando na porta " + this.porta);
 
         Properties prop = new Properties();
@@ -48,38 +39,45 @@ public abstract class Tipo {
             System.exit(0);
         }
 
-        this.iniciarConexao();
-
-        System.out.println(prop.getProperty("app.name"));
-
         Integer totalProcesso = Integer.valueOf(prop.getProperty("app.processo.total"));
-        processos = new ArrayList<>();
+        
+        Processos processos = Processos.getInstance();
+        processos.setTotalProcesso(totalProcesso);
+        
         for (int i = 1; i <= totalProcesso; i++) {
-            String identificador = prop.getProperty("app.processo." + i + ".identificador");
-            String host = prop.getProperty("app.processo." + i + ".host");
-            String port = prop.getProperty("app.processo." + i + ".port");
-
-            if (identificador.equals("") || host.equals("") || port.equals("")) {
-                continue;
+            String nomeProcesso = prop.getProperty("app.processo." + i + ".nome");
+            Integer  identificadorProcesso = Integer.valueOf( prop.getProperty("app.processo." + i + ".identificador"));
+            String hostProcesso = prop.getProperty("app.processo." + i + ".host");
+            String portProcesso = prop.getProperty("app.processo." + i + ".port");
+           
+            Processo processo = new Processo(nomeProcesso, identificadorProcesso, hostProcesso, Integer.valueOf(portProcesso));
+            
+            if (this.nome.equals(nomeProcesso)) {
+                processos.setMe(processo);
+            }
+            
+            if (nomeProcesso.equals("servidor")) {
+              processos.setServidor(processo);
             }
 
-            /*if (this.nome.equals(identificador)) {
-                continue;
-            }*/
-
-            Processo processo = new Processo(identificador, host, Integer.valueOf(port));
-
-            if (identificador.equals("servidor") && this.servidor == null) {
-                this.servidor = processo;
-            }
-
-            processos.add(processo);
+            processos.addProcesso(processo);
         }
 
     }
 
-    public void comunicaOutrosProcesso() {
-        for (Processo processo : processos) {
+    //Possibilita receber mensagens 
+    protected void iniciarConexao() {
+        try {
+            serverSocket = new ServidorSocket(Integer.valueOf(this.porta), this.identificador, this.nome);
+            Thread thread = new Thread(serverSocket);
+            thread.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*public void comunicaOutrosProcesso() {
+        for (Processo processo : Processos.getInstance().getProcessos()) {
             try {
                 ClienteSocket socket = new ClienteSocket(processo.getHost(), processo.getPort());
                 socket.enviar("mudarServidor");
@@ -90,8 +88,8 @@ public abstract class Tipo {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + processo.getIdentificador() + ": " + ex.getMessage());
             }
         }
-    }
-    
+    }*/
+
     public abstract void run();
 
 }

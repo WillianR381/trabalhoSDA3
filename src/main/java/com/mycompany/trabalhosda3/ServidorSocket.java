@@ -11,10 +11,12 @@ public class ServidorSocket implements Runnable {
     
     private ServerSocket serverSocket;
     private String identificador;
+    private String nome;
     
-    public ServidorSocket(Integer port, String identificador) throws IOException {
+    public ServidorSocket(Integer port, String identificador, String nome) throws IOException {
         serverSocket = new ServerSocket(port);
         this.identificador = identificador;
+        this.nome = nome;
         System.out.println("Servidor iniciado na porta " + port + ". Aguardando conexões...");
     }
     
@@ -24,7 +26,7 @@ public class ServidorSocket implements Runnable {
             while(true){
                 Socket socket = serverSocket.accept();
                 
-                Thread thread = new Thread(new ClienteHandler(socket, this.identificador));
+                Thread thread = new Thread(new ClienteHandler(socket, this.identificador, this.nome));
                
                 thread.start();
             }

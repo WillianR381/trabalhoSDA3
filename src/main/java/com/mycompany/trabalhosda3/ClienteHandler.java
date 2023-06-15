@@ -4,6 +4,7 @@
  */
 package com.mycompany.trabalhosda3;
 
+import com.mycompany.trabalhosda3.eleicao.Eleicao;
 import com.mycompany.trabalhosda3.servicos.ProdutoService;
 import com.mycompany.trabalhosda3.servicos.VendedorService;
 import com.mycompany.trabalhosda3.utils.Data;
@@ -17,10 +18,12 @@ public class ClienteHandler implements Runnable {
 
     private Socket socket;
     private String identificador;
+    private String nome;
 
-    public ClienteHandler(Socket socket, String identificador) {
+    public ClienteHandler(Socket socket, String identificador, String nome) {
         this.socket = socket;
         this.identificador = identificador;
+        this.nome = nome;
     }
 
     @Override
@@ -80,7 +83,7 @@ public class ClienteHandler implements Runnable {
 
                 String operacao = variaveisEntrada[0];
                 switch (operacao) {
-                    case "1":
+                    case "1": // Buscar o total de vendas de um vendedor 
                         if (variaveisEntrada.length < 2) {
                             throw new IllegalArgumentException("Preencher com <nomeVendedor>");
                         }
@@ -89,7 +92,7 @@ public class ClienteHandler implements Runnable {
                         mensagem = vendedorService.totalVendas(nomeVendedor);
 
                         break;
-                    case "2":
+                    case "2": //  Buscar o total de vendas de um produto
                         if (variaveisEntrada.length < 2) {
                             throw new IllegalArgumentException("Preencher com <nomeProduto>");
                         }
@@ -99,7 +102,7 @@ public class ClienteHandler implements Runnable {
                         mensagem = produtoService.totalVendas(nomeProduto);
 
                         break;
-                    case "3":
+                    case "3": // Buscar o total de vendas dos produtos por periodo
                         if (variaveisEntrada.length < 3) {
                             throw new IllegalArgumentException("Preencher com <dataInicial> <dataFinal>");
                         }
@@ -113,12 +116,12 @@ public class ClienteHandler implements Runnable {
                         mensagem = produtoService1.totalVendasPorPeriodo(dataInicial, dataFinal);
 
                         break;
-                    case "4":
+                    case "4": // Buscar o vendedor que mais realizou vendas
                         VendedorService vendedorService1 = new VendedorService();
                         mensagem = vendedorService1.melhorVendedor();
 
                         break;
-                    case "5":
+                    case "5": //Buscar o produto que foi mais vendido
                         ProdutoService produtoService2 = new ProdutoService();
                         mensagem = produtoService2.melhorProduto();
 
@@ -127,12 +130,21 @@ public class ClienteHandler implements Runnable {
                         mensagem = "Operação inválida";
                 }
                 out.println(mensagem);
-            } else if (resposta.equals("mudarServidor")) {
-                System.out.println("Cliente conectado: " + socket.getInetAddress().getHostAddress());
-                resposta = in.readLine();
-                System.out.println("Mensagem recebida: " + resposta);
-                out.println("Oi! E eu sou o processo " + this.identificador);
-                in.close();
+            } else if (resposta.equals("iniciaEleicao")) {
+                System.out.println("Eleição Iniciada");
+                //resposta = in.readLine();
+                //System.out.println("Mensagem recebida: " + resposta);
+                out.println( this.identificador);
+                Eleicao.getInstance().setEleicao(true);
+                
+            }else if( resposta.equals("encerraEleicao")){
+               Integer identificadorLider = Integer.valueOf(in.readLine()); 
+                System.out.println("Novo lider é :" + identificadorLider);
+                
+                Processo lider = Processos.getInstance().pegaProcessoPeloIdentificador(identificadorLider);
+                Processos.getInstance().setLider(lider);
+                
+                Eleicao.getInstance().setEleicao(false);
             }
             in.close();
         } catch (IllegalArgumentException e) {
