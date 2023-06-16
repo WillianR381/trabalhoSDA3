@@ -8,7 +8,6 @@ import com.mycompany.trabalhosda3.processos.Gerente;
 import com.mycompany.trabalhosda3.processos.Servidor;
 import com.mycompany.trabalhosda3.processos.Vendedor;
 import java.io.File;
-import java.util.List;
 
 public class TrabalhoSDA3 {
 

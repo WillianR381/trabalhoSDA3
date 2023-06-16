@@ -45,14 +45,14 @@ public class ClienteHandler implements Runnable {
 
                 resposta = in.readLine();
                 if (resposta == null) {
-                    throw new IllegalArgumentException("Operação inválida");
+                    throw new IllegalArgumentException("Error - Operação inválida");
                 }
 
                 System.out.println("Venda recebida: " + resposta);
 
                 String[] variaveisEntrada = resposta.split(" ");
                 if (variaveisEntrada.length < 4) {
-                    throw new IllegalArgumentException("Preencher com <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda>");
+                    throw new IllegalArgumentException("Error - Preencher com <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda>");
                 }
 
                 String nomeVendedor = variaveisEntrada[0].toLowerCase();
@@ -87,7 +87,7 @@ public class ClienteHandler implements Runnable {
                 switch (operacao) {
                     case "1": // Buscar o total de vendas de um vendedor 
                         if (variaveisEntrada.length < 2) {
-                            throw new IllegalArgumentException("Preencher com <nomeVendedor>");
+                            throw new IllegalArgumentException("Error - Preencher com <nomeVendedor>");
                         }
                         VendedorService vendedorService = new VendedorService();
                         String nomeVendedor = variaveisEntrada[1].toLowerCase();
@@ -96,7 +96,7 @@ public class ClienteHandler implements Runnable {
                         break;
                     case "2": //  Buscar o total de vendas de um produto
                         if (variaveisEntrada.length < 2) {
-                            throw new IllegalArgumentException("Preencher com <nomeProduto>");
+                            throw new IllegalArgumentException("Error - Preencher com <nomeProduto>");
                         }
 
                         ProdutoService produtoService = new ProdutoService();
@@ -106,7 +106,7 @@ public class ClienteHandler implements Runnable {
                         break;
                     case "3": // Buscar o total de vendas dos produtos por periodo
                         if (variaveisEntrada.length < 3) {
-                            throw new IllegalArgumentException("Preencher com <dataInicial> <dataFinal>");
+                            throw new IllegalArgumentException("Error - Preencher com <dataInicial> <dataFinal>");
                         }
 
                         String dataInicial = variaveisEntrada[1];
