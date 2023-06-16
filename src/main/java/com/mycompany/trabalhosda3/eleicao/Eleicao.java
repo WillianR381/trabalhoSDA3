@@ -19,110 +19,121 @@ import java.util.Objects;
  * @author willian
  */
 public class Eleicao {
+
     private static Eleicao uniqueInstance;
-    
+
     private Boolean eleicaoIniciada;
-    
-    private Eleicao(){
+
+    private Eleicao() {
         eleicaoIniciada = false;
     }
-    
-    public static synchronized Eleicao getInstance(){
-        if(uniqueInstance == null){
+
+    public static synchronized Eleicao getInstance() {
+        if (uniqueInstance == null) {
             uniqueInstance = new Eleicao();
         }
         return uniqueInstance;
     }
-    
-    public void setEleicao(boolean eleicaoIniciada){
+
+    public void setEleicao(boolean eleicaoIniciada) {
         this.eleicaoIniciada = eleicaoIniciada;
     }
-    
 
-    
-    public void iniciaEleicao(){
-        this.setEleicao(true);
-        
+    public void iniciaEleicao() {
         String mensagemOperacao = "iniciaEleicao";
         
-        Integer meIdentificador = Processos.getInstance().getMe().getIdentificador();
-        
-        List<Processo> processosComIdentificadorMaior = new ArrayList<>();
-        
-        for (Processo processo : Processos.getInstance().getProcessos()) {
-            if(Objects.equals(meIdentificador, processo.getIdentificador())) continue;
-            
-            
-            String respostaIdProcesso = Eleicao.getInstance().enviaMensagem(mensagemOperacao, processo.getHost(), processo.getPort());
-            
-            if(respostaIdProcesso == null) continue ; 
-            
-            System.out.println("Resposta: "+ respostaIdProcesso);
-
-            if(Integer.valueOf(respostaIdProcesso) > meIdentificador){
-               processosComIdentificadorMaior.add(processo);
-            }
-        }
-        
-        if(processosComIdentificadorMaior.isEmpty()){
-            Processo me = Processos.getInstance().getMe();
-            Processos.getInstance().setLider(me);
-                
-            System.out.println("Resultado Eleicao: " + me.getNome() + " id: " + me.getIdentificador() + " é o lider" );
-            this.encerraEleicao();
-        }
-        
-        
-        //Fazer o processo de quando não acha nenhum lider ele asssume, assim
-        //atribuindo em processo me como lider e mandando msg para os outros processos que eu sou o lider
-        //No outros processos colocará em Processos quem é o lider e encerrar a eleição
-        //Criar ping no servidor para ser se tá conectado 
-        
+         for (Processo processo : Processos.getInstance().getProcessos()) {
+            String respostaIdProcesso = this.enviaMensagem(mensagemOperacao, processo.getHost(), processo.getPort());
+         }
+         
+        this.verificaProcessoComIdentificadorMaior();
     }
     
-    public void encerraEleicao(){    
-        String mensagemOperacao = "encerraEleicao";
-         
-        Integer meIdentificador = Processos.getInstance().getMe().getIdentificador();
+    private void verificaProcessoComIdentificadorMaior(){
+        String mensagemOperacao = "verificaProcessoComIdentificadorMaior";
         
-         for (Processo processo : Processos.getInstance().getProcessos()) {
-            if(Objects.equals(meIdentificador, processo.getIdentificador())) continue;
-            
-             try{
+        Integer meIdentificador = Processos.getInstance().getMe().getIdentificador();
+
+        for (Processo processo : Processos.getInstance().getProcessos()) {
+            if (Objects.equals(meIdentificador, processo.getIdentificador())) {
+                continue;
+            }
+
+            String respostaIdProcesso = this.enviaMensagem(mensagemOperacao, processo.getHost(), processo.getPort());
+
+            if (respostaIdProcesso == null) {
+                continue;
+            }
+
+            if (Integer.valueOf(respostaIdProcesso) > meIdentificador) {
+                this.manipulaProcessoComIdentificadorMaior(processo);
+                return;
+            }
+        }
+
+        Processo me = Processos.getInstance().getMe();
+        Processos.getInstance().setLider(me);
+
+        System.out.println("Resultado Eleicao: " + me.getNome() + " id: " + me.getIdentificador() + " é o lider");
+        this.notificaNovoLider();
+        this.encerraEleicao();
+    } 
+    
+    // Anotação 
+    //No outros processos colocará em Processos quem é o lider e encerrar a eleição
+    // Colocar para o metodo iniciar eleicao apenas enviar que comecou e os processos colocarem que tá havendo eleicao
+
+    public void manipulaProcessoComIdentificadorMaior(Processo processo) {
+        String mensagemOperacao = "manipulaProcessoComIdentificadorMaior";
+        
+        try {
+            ClienteSocket socket = new ClienteSocket(processo.getHost(), processo.getPort());
+            socket.enviar(mensagemOperacao);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void notificaNovoLider() {
+        String mensagemOperacao = "novoLider";
+
+        String identificadorLider = String.valueOf(Processos.getInstance().getLider().getIdentificador());
+        for (Processo processo : Processos.getInstance().getProcessos()) {
+
+            try {
                 ClienteSocket socket = new ClienteSocket(processo.getHost(), processo.getPort());
                 socket.enviar(mensagemOperacao);
-                
-                String identificadorLider = String.valueOf( Processos.getInstance().getLider().getIdentificador());
+                // Envia o novo lider
                 socket.enviar(identificadorLider);
-            }catch(IOException ex){
+            } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
-           
-        }
-        
-         
-        this.setEleicao(false);
-    }
-    
-    public String enviaMensagem(String mensagemOperacao, String host, Integer porta  ){
-         try{
-                ClienteSocket socket = new ClienteSocket(host, porta);
-                socket.enviar(mensagemOperacao);
-                
-                String resposta = socket.receber();
-                return  resposta;
-            }catch(IOException ex){
-                System.out.println(ex.getMessage());
-                return null;
-            }
-    }
-    
 
-    public void notificaNovoLider(){
-        
+        }
     }
-    public boolean eleicaoIniciada(){
+
+    public void encerraEleicao() {
+        String mensagemOperacao = "encerraEleicao";
+        for (Processo processo : Processos.getInstance().getProcessos()) {
+            //Notifica a todos que eleicao acabou
+            this.enviaMensagem(mensagemOperacao, processo.getHost(), processo.getPort());
+        }
+    }
+
+    public String enviaMensagem(String mensagemOperacao, String host, Integer porta) {
+        try {
+            ClienteSocket socket = new ClienteSocket(host, porta);
+            socket.enviar(mensagemOperacao);
+
+            String resposta = socket.receber();
+            return resposta;
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
+    public boolean eleicaoIniciada() {
         return this.eleicaoIniciada;
     }
 }
-

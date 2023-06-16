@@ -19,6 +19,8 @@ public abstract class Tipo {
     protected String nome;
     protected String identificador;
     protected ServidorSocket serverSocket;
+    
+    protected String mensagemOperacao; 
 
 
     public Tipo(String porta, String nome, String identificador) {
@@ -26,43 +28,7 @@ public abstract class Tipo {
         this.nome = nome;
         this.identificador = identificador;
 
-        System.out.println("Estou escutando na porta " + this.porta);
-
-        Properties prop = new Properties();
-        try (FileInputStream fis = new FileInputStream("app.config")) {
-            prop.load(fis);
-        } catch (FileNotFoundException ex) {
-            System.err.println("Arquivo de configuração não encontrado");
-            System.exit(0);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.exit(0);
-        }
-
-        Integer totalProcesso = Integer.valueOf(prop.getProperty("app.processo.total"));
-        
-        Processos processos = Processos.getInstance();
-        processos.setTotalProcesso(totalProcesso);
-        
-        for (int i = 1; i <= totalProcesso; i++) {
-            String nomeProcesso = prop.getProperty("app.processo." + i + ".nome");
-            Integer  identificadorProcesso = Integer.valueOf( prop.getProperty("app.processo." + i + ".identificador"));
-            String hostProcesso = prop.getProperty("app.processo." + i + ".host");
-            String portProcesso = prop.getProperty("app.processo." + i + ".port");
-           
-            Processo processo = new Processo(nomeProcesso, identificadorProcesso, hostProcesso, Integer.valueOf(portProcesso));
-            
-            if (this.nome.equals(nomeProcesso)) {
-                processos.setMe(processo);
-            }
-            
-            if (nomeProcesso.equals("servidor")) {
-              processos.setServidor(processo);
-            }
-
-            processos.addProcesso(processo);
-        }
-
+        Processos.getInstance().importaArquivoConfiguracao(porta, nome, identificador);
     }
 
     //Possibilita receber mensagens 

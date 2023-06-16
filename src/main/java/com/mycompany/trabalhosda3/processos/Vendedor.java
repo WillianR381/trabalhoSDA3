@@ -20,6 +20,7 @@ public class Vendedor extends Tipo {
 
     public Vendedor(String porta, String nome, String identificador) {
         super(porta, nome, identificador);
+        mensagemOperacao = "venda";
     }
 
     public void run() {
@@ -27,11 +28,46 @@ public class Vendedor extends Tipo {
         while (true) {
             try {
                 try {
-                    Processo servidor = Processos.getInstance().getServidor();
-                    ClienteSocket socket = new ClienteSocket(servidor.getHost(), servidor.getPort());
+                    String host = null;
+                    Integer porta = null;
+                    
+                    Boolean servidorRodando = Processos.getInstance().servidorRodando();
+                    
+                    if(! servidorRodando){
+                        
+                        System.out.println("Servidor não encontrado !");
+                        //Verifica se existe lider para utilizá-lo
+                        if(Processos.getInstance().existeLider()){
+                            Processo lider = Processos.getInstance().getLider();
+                            host = lider.getHost();
+                            porta = lider.getPort();
+                            System.out.println("Utilizando o servidor temporario! " + lider.getNome() + " com identificador " + lider.getIdentificador());
+                        }else{
+                            // Inicia eleição se não estiver um rodando
+                            if(! Eleicao.getInstance().eleicaoIniciada()){
+                                System.out.println("Eleição Iniciada ");
+                                Eleicao.getInstance().iniciaEleicao();
+                                
+                                continue;
+                            }
+                        }
+                    }else {
+                        System.out.println("Servidor Rodando ");
+                        Processo servidor = Processos.getInstance().getServidor();
+                        host = servidor.getHost();
+                        porta = servidor.getPort();
+                        
+                        Processos.getInstance().setLider(null);
+                    }
+                    
+                    if( host == null || porta == null){
+                        throw  new Exception("Porta ou servidor com valor null");
+                    }
+                   
+                    ClienteSocket socket = new ClienteSocket(host, porta);
                     Scanner scan = new Scanner(System.in);
 
-                    socket.enviar("venda");
+                    socket.enviar(mensagemOperacao);
 
                     String resposta = socket.receber();
                     Impressao.noTerminal(resposta);
@@ -46,9 +82,11 @@ public class Vendedor extends Tipo {
                    // Processo servidor = Processos.getInstance().getServidor();
                    // Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + servidor.getIdentificador() + ": " + ex.getMessage());
                     
-                    if(! Eleicao.getInstance().eleicaoIniciada()){
+                    /*if(! Eleicao.getInstance().eleicaoIniciada()){
                         Eleicao.getInstance().iniciaEleicao();
-                    }
+                    }*/
+                } catch( Exception e){
+                    System.out.println(e.getMessage());
                 }
                 System.out.println("Vou dormir!");
                 Thread.sleep(1000 * 3);

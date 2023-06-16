@@ -1,5 +1,6 @@
 package com.mycompany.trabalhosda3.config;
 
+import com.mycompany.trabalhosda3.Processos;
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,25 +11,24 @@ import java.util.logging.Logger;
 
 public class Database {
 
-    private Connection conexaoDb = null;
+    private static Connection uniqueInstance;
 
-    public Connection pegaConexao() {
-
-        if (conexaoDb == null) {
+    public static synchronized Connection getInstance() {
+        if (uniqueInstance == null) {
             try {
-                this.conexaoDb = DriverManager.getConnection("jdbc:sqlite:banco.db");
+                uniqueInstance = DriverManager.getConnection("jdbc:sqlite:banco.db");
                 System.out.println("Conexão realizada !!!!");
             } catch (SQLException ex) {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
             }
         }
-        return this.conexaoDb;
+        return uniqueInstance;
     }
 
     public void closeConnection() {
         try {
-            if (conexaoDb != null) {
-                conexaoDb.close();
+            if (Database.uniqueInstance != null) {
+                uniqueInstance.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
@@ -57,7 +57,7 @@ public class Database {
                     + "  FOREIGN KEY (produto_id) REFERENCES produtos(id)\n"
                     + ");";
 
-            Statement stmt = this.conexaoDb.createStatement();
+            Statement stmt = Database.uniqueInstance.createStatement();
 
             stmt.executeUpdate(createTableVendedores);
             System.out.println("Tabela Vendedores Criada !!!");
@@ -79,7 +79,7 @@ public class Database {
 
     private void insereRegistros() {
         try {
-            Statement stmt = this.conexaoDb.createStatement();
+            Statement stmt = Database.uniqueInstance.createStatement();
 
             stmt.executeUpdate("INSERT INTO vendedores (nome) VALUES ('carlos')");
             stmt.executeUpdate("INSERT INTO vendedores (nome) VALUES ('roberto')");
@@ -102,8 +102,9 @@ public class Database {
     }
 
     public static void iniciaBancoDados() {
+        Database.getInstance();
+        
         Database database = new Database();
-        database.pegaConexao();
         database.criaTabelas();
         database.insereRegistros();
         database.closeConnection();

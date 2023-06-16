@@ -36,8 +36,10 @@ public class ClienteHandler implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
 
             String resposta = in.readLine();
-
-            if (resposta.equals("venda")) {
+            
+            if (resposta.equals("ping")) {
+                out.println("ok");
+            } else if (resposta.equals("venda")) {
                 String mensagem = "Digite <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda> exemplo: Carlos Arroz 01-06-2023- 333.30 ";
                 out.println(mensagem);
 
@@ -131,21 +133,31 @@ public class ClienteHandler implements Runnable {
                 }
                 out.println(mensagem);
             } else if (resposta.equals("iniciaEleicao")) {
-                System.out.println("Eleição Iniciada");
+                System.out.println("Eleição Iniciada Handler");
                 //resposta = in.readLine();
                 //System.out.println("Mensagem recebida: " + resposta);
-                out.println( this.identificador);
                 Eleicao.getInstance().setEleicao(true);
+
+            } else if (resposta.equals("verificaProcessoComIdentificadorMaior")) {
+                System.out.println("Envia id");
+                out.println(this.identificador);
                 
-            }else if( resposta.equals("encerraEleicao")){
-               Integer identificadorLider = Integer.valueOf(in.readLine()); 
+            }  else if (resposta.equals("manipulaProcessoComIdentificadorMaior")) {
+                System.out.println("Manipula Processo");
+                Eleicao.getInstance().iniciaEleicao();
+
+            }else if (resposta.equals("novoLider")) {
+                Integer identificadorLider = Integer.valueOf(in.readLine());
                 System.out.println("Novo lider é :" + identificadorLider);
-                
+
                 Processo lider = Processos.getInstance().pegaProcessoPeloIdentificador(identificadorLider);
                 Processos.getInstance().setLider(lider);
-                
+
+            } else if (resposta.equals("encerraEleicao")) {
+                System.out.println("Eleição encerrada");
                 Eleicao.getInstance().setEleicao(false);
-            }
+
+            } 
             in.close();
         } catch (IllegalArgumentException e) {
             try {
