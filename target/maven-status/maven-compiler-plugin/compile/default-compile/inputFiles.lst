@@ -2,12 +2,14 @@
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/utils/Impressao.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/ClienteHandler.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/TrabalhoSDA3.java
+/home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/eleicao/Eleicao.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/processos/Gerente.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/ServidorSocket.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/Tipo.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/Processo.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/servicos/VendedorService.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/processos/Vendedor.java
+/home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/Processos.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/config/Database.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/utils/ValorMonetario.java
 /home/willian/NetBeansProjects/trabalhoSDA3/src/main/java/com/mycompany/trabalhosda3/processos/Servidor.java

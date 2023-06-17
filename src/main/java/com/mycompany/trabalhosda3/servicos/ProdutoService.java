@@ -7,7 +7,6 @@ package com.mycompany.trabalhosda3.servicos;
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import com.mycompany.trabalhosda3.config.Database;
 import com.mycompany.trabalhosda3.utils.ValorMonetario;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,14 +18,7 @@ import java.util.logging.Logger;
  * @author willian
  */
 public class ProdutoService {
-
-    private Connection conexaoDb = null;
-
-    public ProdutoService() {
-        Database database = new Database();
-        this.conexaoDb = database.pegaConexao();
-    }
-
+   
     public String totalVendas(String nomeProduto) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -37,12 +29,19 @@ public class ProdutoService {
                     + "JOIN vendas vs ON p.id = vs.produto_id \n"
                     + "WHERE p.nome = ?";
 
-            pstmt = this.conexaoDb.prepareStatement(pegaTotalVendas);
+            pstmt = Database.getInstance().prepareStatement(pegaTotalVendas);
             pstmt.setString(1, nomeProduto);
             rs = pstmt.executeQuery();
 
-            String totalVendas = ValorMonetario.formatar(rs.getDouble("total_vendas"));
-            resposta = "Produto: " + rs.getString("produto") + " tem o total de vendas de  " + totalVendas;
+            Double totalVendas = rs.getDouble("total_vendas");
+            String nomeProdutoTotalVendas =  rs.getString("produto");
+            
+            if(totalVendas == null || nomeProdutoTotalVendas == null  ){
+                throw  new Exception("Produto não encontrado");
+            }
+            
+            String totalVendasFormatada = ValorMonetario.formatar(rs.getDouble("total_vendas"));
+            resposta = "Produto: " + nomeProdutoTotalVendas + " tem o total de vendas de  " + totalVendasFormatada;
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -74,7 +73,7 @@ public class ProdutoService {
                     + "GROUP BY p.nome \n"
                     + "ORDER BY vs.valor DESC";
                     
-            pstmt = this.conexaoDb.prepareStatement(pegaTotalVendasPorPeriodo);
+            pstmt = Database.getInstance().prepareStatement(pegaTotalVendasPorPeriodo);
             pstmt.setString(1, dataInicial);
             pstmt.setString(2, dataFinal);
             rs = pstmt.executeQuery();
@@ -112,7 +111,7 @@ public class ProdutoService {
                     + "ORDER BY total_vendas DESC\n"
                     + "LIMIT 1;";
 
-            pstmt = this.conexaoDb.prepareStatement(pegaTotalVendasPorPeriodo);
+            pstmt = Database.getInstance().prepareStatement(pegaTotalVendasPorPeriodo);
             rs = pstmt.executeQuery();
             
             String totalVendas = ValorMonetario.formatar(rs.getDouble("total_vendas"));

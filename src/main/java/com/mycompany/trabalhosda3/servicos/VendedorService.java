@@ -7,7 +7,6 @@ package com.mycompany.trabalhosda3.servicos;
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import com.mycompany.trabalhosda3.config.Database;
 import com.mycompany.trabalhosda3.utils.ValorMonetario;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,13 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class VendedorService {
-
-    private Connection conexaoDb = null;
-
-    public VendedorService() {
-        Database database = new Database();
-        this.conexaoDb = database.pegaConexao();
-    }
 
     public String realizaVenda(String nomeVendedor, String nomeProduto, String dataVenda, Double valorVenda) {
         PreparedStatement pstmt = null;
@@ -37,7 +29,7 @@ public class VendedorService {
                     + "FROM vendedores v \n"
                     + "WHERE v.nome == ?";
 
-            pstmt = this.conexaoDb.prepareStatement(queryPegaIdVendedorPorNome);
+            pstmt = Database.getInstance().prepareStatement(queryPegaIdVendedorPorNome);
             pstmt.setString(1, nomeVendedor);
             rs = pstmt.executeQuery();
             
@@ -46,12 +38,15 @@ public class VendedorService {
             }
             
             int idVendedor = rs.getInt("id");
-
+            
+            pstmt.close();
+            rs.close();
+            
             String queryPegaIdProdutoPorNome = "SELECT * \n"
                     + "FROM produtos p \n"
                     + "WHERE nome == ?";
 
-            pstmt = this.conexaoDb.prepareStatement(queryPegaIdProdutoPorNome);
+            pstmt = Database.getInstance().prepareStatement(queryPegaIdProdutoPorNome);
             pstmt.setString(1, nomeProduto);
             rs = pstmt.executeQuery();
             
@@ -64,7 +59,7 @@ public class VendedorService {
             String insertCriaVenda = "INSERT INTO vendas  (vendedor_id, produto_id, data_venda, valor)"
                     + " VALUES (?, ?, ?, ?)";
 
-            pstmt = this.conexaoDb.prepareStatement(insertCriaVenda);
+            pstmt = Database.getInstance().prepareStatement(insertCriaVenda);
             pstmt.setInt(1, idVendedor);
             pstmt.setInt(2, idProduto);
             pstmt.setString(3, dataVenda);
@@ -104,7 +99,7 @@ public class VendedorService {
                     + "JOIN vendas vs ON v.id = vs.vendedor_id\n"
                     + "WHERE v.nome = ?\n";
 
-            pstmt = this.conexaoDb.prepareStatement(pegaTotalVendas);
+            pstmt = Database.getInstance().prepareStatement(pegaTotalVendas);
             pstmt.setString(1, nomeVendedor);
             rs = pstmt.executeQuery();
             
@@ -144,7 +139,7 @@ public class VendedorService {
                     + "ORDER BY total_vendas DESC\n"
                     + "LIMIT 1;";
 
-            pstmt = this.conexaoDb.prepareStatement(pegaTotalVendas);
+            pstmt = Database.getInstance().prepareStatement(pegaTotalVendas);
             rs = pstmt.executeQuery();
             
             if(!rs.next()){

@@ -4,6 +4,7 @@
  */
 package com.mycompany.trabalhosda3;
 
+import com.mycompany.trabalhosda3.eleicao.Eleicao;
 import com.mycompany.trabalhosda3.servicos.ProdutoService;
 import com.mycompany.trabalhosda3.servicos.VendedorService;
 import com.mycompany.trabalhosda3.utils.Data;
@@ -17,10 +18,12 @@ public class ClienteHandler implements Runnable {
 
     private Socket socket;
     private String identificador;
+    private String nome;
 
-    public ClienteHandler(Socket socket, String identificador) {
+    public ClienteHandler(Socket socket, String identificador, String nome) {
         this.socket = socket;
         this.identificador = identificador;
+        this.nome = nome;
     }
 
     @Override
@@ -33,21 +36,23 @@ public class ClienteHandler implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
 
             String resposta = in.readLine();
-
-            if (resposta.equals("venda")) {
+            
+            if (resposta.equals("ping"))  {
+                out.println("ok");
+            } else if (resposta.equals("venda")) {
                 String mensagem = "Digite <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda> exemplo: Carlos Arroz 01-06-2023- 333.30 ";
                 out.println(mensagem);
 
                 resposta = in.readLine();
                 if (resposta == null) {
-                    throw new IllegalArgumentException("Operação inválida");
+                    throw new IllegalArgumentException("Erro - Operação inválida");
                 }
 
                 System.out.println("Venda recebida: " + resposta);
 
                 String[] variaveisEntrada = resposta.split(" ");
                 if (variaveisEntrada.length < 4) {
-                    throw new IllegalArgumentException("Preencher com <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda>");
+                    throw new IllegalArgumentException("Erro - Preencher com <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda>");
                 }
 
                 String nomeVendedor = variaveisEntrada[0].toLowerCase();
@@ -55,7 +60,7 @@ public class ClienteHandler implements Runnable {
                 String dataVenda = variaveisEntrada[2];
                 Double valorVenda = Double.valueOf(variaveisEntrada[3]);
                 dataVenda = Data.formataParaAnoMesDia(dataVenda);
-
+                
                 VendedorService vendedorService = new VendedorService();
                 mensagem = vendedorService.realizaVenda(nomeVendedor, nomeProduto, dataVenda, valorVenda);
                 out.println(mensagem);
@@ -74,34 +79,39 @@ public class ClienteHandler implements Runnable {
                     throw new IllegalArgumentException("Operação inválida");
                 }
 
-                System.out.println("Busca recebida: operação " + resposta);
-
                 String[] variaveisEntrada = resposta.split(" ");
 
                 String operacao = variaveisEntrada[0];
                 switch (operacao) {
-                    case "1":
+                    case "1": // Buscar o total de vendas de um vendedor 
                         if (variaveisEntrada.length < 2) {
-                            throw new IllegalArgumentException("Preencher com <nomeVendedor>");
+                            throw new IllegalArgumentException("Erro - Preencher com <nomeVendedor>");
                         }
+
                         VendedorService vendedorService = new VendedorService();
                         String nomeVendedor = variaveisEntrada[1].toLowerCase();
+                        
+                        System.out.println("Busca o total de vendas do vendedor: " + nomeVendedor);
+                        
                         mensagem = vendedorService.totalVendas(nomeVendedor);
 
                         break;
-                    case "2":
+                    case "2": //  Buscar o total de vendas de um produto
                         if (variaveisEntrada.length < 2) {
-                            throw new IllegalArgumentException("Preencher com <nomeProduto>");
+                            throw new IllegalArgumentException("Erro - Preencher com <nomeProduto>");
                         }
 
                         ProdutoService produtoService = new ProdutoService();
                         String nomeProduto = variaveisEntrada[1].toLowerCase();
+                        
+                        System.out.println("Busca o total de vendas do produto: " + nomeProduto);
+                        
                         mensagem = produtoService.totalVendas(nomeProduto);
 
                         break;
-                    case "3":
+                    case "3": // Buscar o total de vendas dos produtos por periodo
                         if (variaveisEntrada.length < 3) {
-                            throw new IllegalArgumentException("Preencher com <dataInicial> <dataFinal>");
+                            throw new IllegalArgumentException("Erro - Preencher com <dataInicial> <dataFinal>");
                         }
 
                         String dataInicial = variaveisEntrada[1];
@@ -110,30 +120,53 @@ public class ClienteHandler implements Runnable {
                         ProdutoService produtoService1 = new ProdutoService();
                         dataInicial = Data.formataParaAnoMesDia(dataInicial);
                         dataFinal = Data.formataParaAnoMesDia(dataFinal);
+                        
+                        System.out.println(" Buscar o total de vendas dos produtos no periodo de " + dataInicial + " até " + dataFinal );
+                        
                         mensagem = produtoService1.totalVendasPorPeriodo(dataInicial, dataFinal);
 
                         break;
-                    case "4":
+                    case "4": // Buscar o vendedor que mais realizou vendas
+                        System.out.println("Busca o vendedor que mais realizou vendas");
+                        
                         VendedorService vendedorService1 = new VendedorService();
                         mensagem = vendedorService1.melhorVendedor();
 
                         break;
-                    case "5":
+                    case "5": //Buscar o produto que foi mais vendido
+                        System.out.println("Busca o produto que foi mais vendido");
+                        
                         ProdutoService produtoService2 = new ProdutoService();
                         mensagem = produtoService2.melhorProduto();
 
                         break;
                     default:
-                        mensagem = "Operação inválida";
+                        mensagem = "Erro - Operação inválida";
                 }
                 out.println(mensagem);
-            } else if (resposta.equals("mudarServidor")) {
-                System.out.println("Cliente conectado: " + socket.getInetAddress().getHostAddress());
-                resposta = in.readLine();
-                System.out.println("Mensagem recebida: " + resposta);
-                out.println("Oi! E eu sou o processo " + this.identificador);
-                in.close();
-            }
+            } else if (resposta.equals("iniciaEleicao")) {
+                System.out.println("Eleição Iniciada");
+                Eleicao.getInstance().setEleicao(true);
+
+            } else if (resposta.equals("verificaProcessoComIdentificadorMaior")) {
+                out.println(this.identificador);
+                
+            }  else if (resposta.equals("manipulaProcessoComIdentificadorMaior")) {
+                Eleicao.getInstance().verificaProcessoComIdentificadorMaior();
+
+            }else if (resposta.equals("novoLider")) {
+                Integer identificadorLider = Integer.valueOf(in.readLine());
+               
+                Processo lider = Processos.getInstance().pegaProcessoPeloIdentificador(identificadorLider);
+                Processos.getInstance().setLider(lider);
+                
+                 System.out.println("Novo lider é :" + lider.getNome() + " com identificador :" + lider.getIdentificador());
+
+            } else if (resposta.equals("encerraEleicao")) {
+                System.out.println("Eleição encerrada");
+                Eleicao.getInstance().setEleicao(false);
+
+            } 
             in.close();
         } catch (IllegalArgumentException e) {
             try {

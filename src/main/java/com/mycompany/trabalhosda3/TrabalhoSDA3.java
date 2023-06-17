@@ -12,8 +12,8 @@ import java.io.File;
 public class TrabalhoSDA3 {
 
     public static void main(String[] args) {
-        if (args.length != 3) {
-            System.out.println("Para executar o programa: <tipo> <identificador> <porta>");
+        if (args.length != 4) {
+            System.out.println("Para executar o programa: <tipo> <nome> <identificador> <porta>");
             System.exit(0);
         }
 
@@ -27,24 +27,23 @@ public class TrabalhoSDA3 {
 
         String tipo = args[0];
         String nome = args[1];
-        String porta = args[2];
+        String identificador = args[2];
+        String porta = args[3];
         System.out.println("Olá, eu sou o processo do tipo " + tipo + " com o identificador " + nome);
 
-        long pid = ProcessHandle.current().pid();
-
-        System.out.println("Pid" + pid);
         switch (tipo) {
             case "vendedor":
-                Vendedor vendedor = new Vendedor(porta, nome);
+                Vendedor vendedor = new Vendedor(porta, nome, identificador);
                 vendedor.run();
+
                 break;
             case "gerente":
-                Gerente gerente = new Gerente(porta, nome);
+                Gerente gerente = new Gerente(porta, nome, identificador);
                 gerente.run();
                 break;
             case "servidor":
-                Servidor servidor = new Servidor(porta, nome);
-                //servidor.run();
+                Servidor servidor = new Servidor(porta, nome, identificador);
+                servidor.run();
                 break;
             default:
                 System.out.println("Tipo não válido!");

@@ -1,4 +1,6 @@
 com/mycompany/trabalhosda3/processos/Servidor.class
+com/mycompany/trabalhosda3/eleicao/Eleicao.class
+com/mycompany/trabalhosda3/Processos.class
 com/mycompany/trabalhosda3/ClienteHandler.class
 com/mycompany/trabalhosda3/utils/Data.class
 com/mycompany/trabalhosda3/utils/ValorMonetario.class

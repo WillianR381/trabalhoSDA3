@@ -13,11 +13,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Servidor extends Tipo {
-    public Servidor(String porta, String nome){
-        super(porta, nome);
+    public Servidor(String porta, String nome, String identificador){
+        super(porta, nome, identificador);
     }
     
     public void run(){
+        this.iniciarConexao();
        /* while(true){
            try{
               for(Processo processo : processos){
