@@ -11,7 +11,8 @@
 - Os scripts só abrangem distros linux. No caso testado no Ubuntu 22.04 .
 
 # Iniciar o projeto
-- abrir na pasta raiz do projeto, no caso trabalhoSDA3
+- Abrir na pasta raiz do projeto, no caso trabalhoSDA3
+- Fazer o build para criar o jar do projeto
 - Executar o script para iniciar os processos `./iniciaTodosProcessos.sh `. Será aberto 5 processos, 1 Servidor, 2 gerentes e 2 vendedores. 
 - Caso queira derrubar o servidor e inicia-lo basta rodar o comando `./iniciaServidor.sh`
 

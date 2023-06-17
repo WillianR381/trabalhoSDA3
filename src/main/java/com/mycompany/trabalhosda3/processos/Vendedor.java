@@ -28,9 +28,6 @@ public class Vendedor extends Tipo {
         while (true) {
             try {
                 try {
-                    String host = null;
-                    Integer porta = null;
-
                     //Manda um requisição ao servidor retornando um booleano se ele respondeu
                     Boolean servidorRodando = Processos.getInstance().servidorRodando();
 
@@ -42,8 +39,8 @@ public class Vendedor extends Tipo {
                             Processo servidor = Processos.getInstance().getServidor();
                             System.out.println("Servidor rodando");
 
-                            host = servidor.getHost();
-                            porta = servidor.getPort();
+                            String host = servidor.getHost();
+                            Integer porta = servidor.getPort();
 
                             if (host == null || porta == null) {
                                 throw new Exception("Porta ou servidor com valor null");
@@ -68,7 +65,7 @@ public class Vendedor extends Tipo {
                     } else {
                         /*
                         * Caso o servidor principal não esteja funcionando utilizará o temporário ou inicia eleição
-                        */
+                         */
                         System.out.println("Servidor não encontrado !");
                         //Verifica se existe um lider para utilizá-lo como servidor temporário
                         if (Processos.getInstance().existeLider()) {
@@ -77,8 +74,8 @@ public class Vendedor extends Tipo {
                              */
                             try {
                                 Processo lider = Processos.getInstance().getLider();
-                                host = lider.getHost();
-                                porta = lider.getPort();
+                                String host = lider.getHost();
+                                Integer porta = lider.getPort();
                                 System.out.println("Utilizando o servidor temporario! " + lider.getNome() + " com identificador " + lider.getIdentificador());
 
                                 if (host == null || porta == null) {
