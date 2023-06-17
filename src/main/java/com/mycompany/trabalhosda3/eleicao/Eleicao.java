@@ -8,10 +8,6 @@ import com.mycompany.trabalhosda3.ClienteSocket;
 import com.mycompany.trabalhosda3.Processo;
 import com.mycompany.trabalhosda3.Processos;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -49,9 +45,10 @@ public class Eleicao {
         this.verificaProcessoComIdentificadorMaior();
     }
     
-    private void verificaProcessoComIdentificadorMaior(){
+    public void verificaProcessoComIdentificadorMaior(){
         String mensagemOperacao = "verificaProcessoComIdentificadorMaior";
         
+        //Identificador do atual processo
         Integer meIdentificador = Processos.getInstance().getMe().getIdentificador();
 
         for (Processo processo : Processos.getInstance().getProcessos()) {
@@ -79,10 +76,7 @@ public class Eleicao {
         this.encerraEleicao();
     } 
     
-    // Anotação 
-    //No outros processos colocará em Processos quem é o lider e encerrar a eleição
-    // Colocar para o metodo iniciar eleicao apenas enviar que comecou e os processos colocarem que tá havendo eleicao
-
+  
     public void manipulaProcessoComIdentificadorMaior(Processo processo) {
         String mensagemOperacao = "manipulaProcessoComIdentificadorMaior";
         

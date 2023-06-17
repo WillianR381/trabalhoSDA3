@@ -4,14 +4,7 @@
  */
 package com.mycompany.trabalhosda3;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class Tipo {
 
@@ -42,19 +35,6 @@ public abstract class Tipo {
         }
     }
 
-    /*public void comunicaOutrosProcesso() {
-        for (Processo processo : Processos.getInstance().getProcessos()) {
-            try {
-                ClienteSocket socket = new ClienteSocket(processo.getHost(), processo.getPort());
-                socket.enviar("mudarServidor");
-                socket.enviar("Olá, eu sou o processo consumidor " + this.nome);
-                String resposta = socket.receber();
-                System.out.println("Resposta: " + resposta);
-            } catch (IOException ex) {
-                Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + processo.getIdentificador() + ": " + ex.getMessage());
-            }
-        }
-    }*/
 
     public abstract void run();
 

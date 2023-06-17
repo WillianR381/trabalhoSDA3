@@ -7,7 +7,6 @@ package com.mycompany.trabalhosda3.servicos;
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import com.mycompany.trabalhosda3.config.Database;
 import com.mycompany.trabalhosda3.utils.ValorMonetario;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

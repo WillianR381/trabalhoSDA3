@@ -30,62 +30,92 @@ public class Vendedor extends Tipo {
                 try {
                     String host = null;
                     Integer porta = null;
-                    
+
+                    //Manda um requisição ao servidor retornando um booleano se ele respondeu
                     Boolean servidorRodando = Processos.getInstance().servidorRodando();
-                    
-                    if(! servidorRodando){
-                        
+
+                    if (servidorRodando) {
+                        try {
+                            //Quando acessa ao servidor remove o lider 
+                            Processos.getInstance().setLider(null);
+
+                            Processo servidor = Processos.getInstance().getServidor();
+                            System.out.println("Servidor rodando");
+
+                            host = servidor.getHost();
+                            porta = servidor.getPort();
+
+                            if (host == null || porta == null) {
+                                throw new Exception("Porta ou servidor com valor null");
+                            }
+
+                            ClienteSocket socket = new ClienteSocket(host, porta);
+                            Scanner scan = new Scanner(System.in);
+
+                            socket.enviar(mensagemOperacao);
+
+                            String resposta = socket.receber();
+                            Impressao.noTerminal(resposta);
+
+                            String mensagem = scan.nextLine();
+                            socket.enviar(mensagem);
+
+                            resposta = socket.receber();
+                            Impressao.noTerminal(resposta);
+                        } catch (IOException ex) {
+                            Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Servidor não respondeu", ex);
+                        }
+                    } else {
+                        /*
+                        * Caso o servidor principal não esteja funcionando utilizará o temporário ou inicia eleição
+                        */
                         System.out.println("Servidor não encontrado !");
-                        //Verifica se existe lider para utilizá-lo
-                        if(Processos.getInstance().existeLider()){
-                            Processo lider = Processos.getInstance().getLider();
-                            host = lider.getHost();
-                            porta = lider.getPort();
-                            System.out.println("Utilizando o servidor temporario! " + lider.getNome() + " com identificador " + lider.getIdentificador());
-                        }else{
-                            // Inicia eleição se não estiver um rodando
-                            if(! Eleicao.getInstance().eleicaoIniciada()){
+                        //Verifica se existe um lider para utilizá-lo como servidor temporário
+                        if (Processos.getInstance().existeLider()) {
+                            /*
+                            * Utiliza o lider como servidor temporario 
+                             */
+                            try {
+                                Processo lider = Processos.getInstance().getLider();
+                                host = lider.getHost();
+                                porta = lider.getPort();
+                                System.out.println("Utilizando o servidor temporario! " + lider.getNome() + " com identificador " + lider.getIdentificador());
+
+                                if (host == null || porta == null) {
+                                    throw new Exception("Porta ou servidor com valor null");
+                                }
+
+                                ClienteSocket socket = new ClienteSocket(host, porta);
+                                Scanner scan = new Scanner(System.in);
+
+                                socket.enviar(mensagemOperacao);
+
+                                String resposta = socket.receber();
+                                Impressao.noTerminal(resposta);
+
+                                String mensagem = scan.nextLine();
+                                socket.enviar(mensagem);
+
+                                resposta = socket.receber();
+                                Impressao.noTerminal(resposta);
+                            } catch (IOException ex) {
+                                Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Servidor temporario não respondeu", ex);
+                                Processos.getInstance().setLider(null);
+                            }
+                        } else {
+                            /* 
+                            * Inicia eleição 
+                             */
+                            if (!Eleicao.getInstance().eleicaoIniciada()) {
                                 System.out.println("Eleição Iniciada ");
                                 Eleicao.getInstance().iniciaEleicao();
-                                
+
                                 continue;
                             }
                         }
-                    }else {
-                        System.out.println("Servidor Rodando ");
-                        Processo servidor = Processos.getInstance().getServidor();
-                        host = servidor.getHost();
-                        porta = servidor.getPort();
-                        
-                        Processos.getInstance().setLider(null);
                     }
-                    
-                    if( host == null || porta == null){
-                        throw  new Exception("Porta ou servidor com valor null");
-                    }
-                   
-                    ClienteSocket socket = new ClienteSocket(host, porta);
-                    Scanner scan = new Scanner(System.in);
 
-                    socket.enviar(mensagemOperacao);
-
-                    String resposta = socket.receber();
-                    Impressao.noTerminal(resposta);
-
-                    String mensagem = scan.nextLine();
-                    socket.enviar(mensagem);
-
-                    resposta = socket.receber();
-                    Impressao.noTerminal(resposta);
-
-                } catch (IOException ex) {
-                   // Processo servidor = Processos.getInstance().getServidor();
-                   // Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Erro na conexão com " + servidor.getIdentificador() + ": " + ex.getMessage());
-                    
-                    /*if(! Eleicao.getInstance().eleicaoIniciada()){
-                        Eleicao.getInstance().iniciaEleicao();
-                    }*/
-                } catch( Exception e){
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 System.out.println("Vou dormir!");

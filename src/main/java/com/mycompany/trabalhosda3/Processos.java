@@ -142,13 +142,6 @@ public class Processos {
         return !processosIdMaior.isEmpty() ? processosIdMaior : null;
     }
 
-    /*
-    public Processo getRandomProcesso(){
-        Random rand = new Random();
-        int index = rand.nextInt(processos.size());
-        index = (index == 0) ? processos.size() : index;
-        return processos.get(index);
-    }*/
 
     public boolean servidorRodando() {
         try {
