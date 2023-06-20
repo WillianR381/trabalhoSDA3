@@ -23,6 +23,7 @@ public class Vendedor extends Tipo {
         mensagemOperacao = "venda";
     }
 
+    @Override
     public void run() {
         this.iniciarConexao();
         while (true) {
