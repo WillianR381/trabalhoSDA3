@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- *
- * @author willian
+ * Classe que contém toda lógica de eleição do projeto
  */
 public class Eleicao {
 
@@ -39,7 +38,7 @@ public class Eleicao {
         String mensagemOperacao = "iniciaEleicao";
         
          for (Processo processo : Processos.getInstance().getProcessos()) {
-            String respostaIdProcesso = this.enviaMensagem(mensagemOperacao, processo.getHost(), processo.getPort());
+            this.enviaMensagem(mensagemOperacao, processo.getHost(), processo.getPort());
          }
          
         this.verificaProcessoComIdentificadorMaior();
@@ -50,7 +49,7 @@ public class Eleicao {
         
         //Identificador do atual processo
         Integer meIdentificador = Processos.getInstance().getMe().getIdentificador();
-
+        
         for (Processo processo : Processos.getInstance().getProcessos()) {
             if (Objects.equals(meIdentificador, processo.getIdentificador())) {
                 continue;
@@ -109,7 +108,7 @@ public class Eleicao {
     public void encerraEleicao() {
         String mensagemOperacao = "encerraEleicao";
         for (Processo processo : Processos.getInstance().getProcessos()) {
-            //Notifica a todos que eleicao acabou
+            //Notifica a todos que eleicao encerrou
             this.enviaMensagem(mensagemOperacao, processo.getHost(), processo.getPort());
         }
     }

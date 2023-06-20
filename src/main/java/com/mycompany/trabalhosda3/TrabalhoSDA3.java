@@ -10,7 +10,11 @@ import com.mycompany.trabalhosda3.processos.Vendedor;
 import java.io.File;
 
 public class TrabalhoSDA3 {
-
+    
+    /**
+     * Cria o processo a depender dos tipos passados no argumento
+     * @param args 
+     */
     public static void main(String[] args) {
         if (args.length != 4) {
             System.out.println("Para executar o programa: <tipo> <nome> <identificador> <porta>");

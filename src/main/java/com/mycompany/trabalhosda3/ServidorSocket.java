@@ -20,6 +20,11 @@ public class ServidorSocket implements Runnable {
         System.out.println("Servidor iniciado na porta " + port + ". Aguardando conexões...");
     }
     
+    /**
+     * Fica escutando até um clientSocket conecte-se ao servidor e atribuir a uma nova thread 
+     * o ClientHandler trocará mensagem para fazer as operações desejada pelo cliente,
+     * o uso de Thread possíbilita multiplas conexões ao servidor
+     */
     @Override
     public void run(){
         try {

@@ -10,10 +10,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author willian
- */
 public class Data {
 
     private static SimpleDateFormat formatadorAnoMesDia = new SimpleDateFormat("yyyy-MM-dd");
@@ -39,5 +35,23 @@ public class Data {
             Logger.getLogger(Data.class.getName()).log(Level.SEVERE, "Erro Data::formataParaAnoMesDia", ex);
         }
         return dataFormatada;
+    }
+    
+    public static boolean validaData(String data){
+        
+        System.out.println(data);
+        String[] dataNaoFormatado = data.split("-");
+        
+        Integer dia = Integer.valueOf(dataNaoFormatado[0]);
+        Integer mes = Integer.valueOf(dataNaoFormatado[1]);
+        Integer ano =  Integer.valueOf(dataNaoFormatado[2]);
+        
+        if( ano >= 1900 && ano <= 2023 &&
+            mes > 0 && mes <= 12 &&
+            dia > 0 && dia <= 31){
+            return true;
+        }
+        
+        return false;
     }
 }

@@ -43,7 +43,7 @@ public class Vendedor extends Tipo {
                             Integer porta = servidor.getPort();
 
                             if (host == null || porta == null) {
-                                throw new Exception("Porta ou servidor com valor null");
+                                throw new Exception("Erro - Porta ou servidor com valor null");
                             }
 
                             ClienteSocket socket = new ClienteSocket(host, porta);
@@ -64,7 +64,7 @@ public class Vendedor extends Tipo {
                         }
                     } else {
                         /*
-                        * Caso o servidor principal não esteja funcionando utilizará o temporário ou inicia eleição
+                         * Caso o servidor principal não esteja funcionando utilizará o temporário ou inicia eleição
                          */
                         System.out.println("Servidor não encontrado !");
                         //Verifica se existe um lider para utilizá-lo como servidor temporário
@@ -79,7 +79,7 @@ public class Vendedor extends Tipo {
                                 System.out.println("Utilizando o servidor temporario! " + lider.getNome() + " com identificador " + lider.getIdentificador());
 
                                 if (host == null || porta == null) {
-                                    throw new Exception("Porta ou servidor com valor null");
+                                    throw new Exception("Erro - Porta ou servidor com valor null");
                                 }
 
                                 ClienteSocket socket = new ClienteSocket(host, porta);
@@ -96,7 +96,6 @@ public class Vendedor extends Tipo {
                                 resposta = socket.receber();
                                 Impressao.noTerminal(resposta);
                             } catch (IOException ex) {
-                                Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "Servidor temporario não respondeu", ex);
                                 Processos.getInstance().setLider(null);
                             }
                         } else {
@@ -104,7 +103,6 @@ public class Vendedor extends Tipo {
                             * Inicia eleição 
                              */
                             if (!Eleicao.getInstance().eleicaoIniciada()) {
-                                System.out.println("Eleição Iniciada ");
                                 Eleicao.getInstance().iniciaEleicao();
 
                                 continue;
@@ -115,8 +113,8 @@ public class Vendedor extends Tipo {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-                System.out.println("Vou dormir!");
-                Thread.sleep(1000 * 3);
+                System.out.println("Em espera!");
+                Thread.sleep(1000 * 5);
             } catch (InterruptedException ex) {
                 Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
             }

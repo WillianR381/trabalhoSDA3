@@ -4,18 +4,18 @@
  */
 package com.mycompany.trabalhosda3;
 
-import com.mycompany.trabalhosda3.eleicao.Eleicao;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 /**
- *
- * @author willian
+ * 
+ * Classe responsável por mapear os processos presentes no arquivo de configuração (app.config),
+ * além de armazenar as minhas informações do processo, do servidor e caso eleito o processo líder
+ * 
  */
 public class Processos {
 
@@ -132,17 +132,10 @@ public class Processos {
         return null;
     }
 
-    public List<Processo> pegaProcessosIdentificadorMaior(Integer id) {
-        List<Processo> processosIdMaior = new ArrayList<>();
-        for (Processo processo : this.processos) {
-            if (processo.getIdentificador() > id) {
-                processosIdMaior.add(processo);
-            }
-        }
-        return !processosIdMaior.isEmpty() ? processosIdMaior : null;
-    }
-
-
+    /**
+     * Verifica se o servidor está funcionando, assim retornando o booleano da condição
+     * @return Boolean
+     */
     public boolean servidorRodando() {
         try {
             // Verifica se o servidor está rodando 

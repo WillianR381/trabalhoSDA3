@@ -1,6 +1,5 @@
 package com.mycompany.trabalhosda3.config;
 
-import com.mycompany.trabalhosda3.Processos;
 import com.mycompany.trabalhosda3.TrabalhoSDA3;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,7 +18,7 @@ public class Database {
                 uniqueInstance = DriverManager.getConnection("jdbc:sqlite:banco.db");
                 System.out.println("Conexão realizada !!!!");
             } catch (SQLException ex) {
-                Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
+                Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "SQLException", ex);
             }
         }
         return uniqueInstance;
@@ -31,7 +30,7 @@ public class Database {
                 uniqueInstance.close();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
+            Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "SQLException", ex);
         }
     }
 
@@ -72,7 +71,7 @@ public class Database {
             System.out.println("Tabela Vendas Criada !!!");
 
         } catch (SQLException ex) {
-            Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
+            Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "SQLException", ex);
         }
 
     }
@@ -97,7 +96,7 @@ public class Database {
             stmt.executeUpdate("INSERT INTO vendas (vendedor_id, produto_id, data_venda, valor) VALUES (3, 2, '2023-12-03', 350.00);");
 
         } catch (SQLException ex) {
-            Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "ThreadSleep", ex);
+            Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "SQLException", ex);
         }
     }
 
@@ -110,11 +109,4 @@ public class Database {
         database.closeConnection();
     }
 
-    /*public static void main(String[] args) {
-        Database database = new Database();
-        database.getConnection();
-        database.createTables();
-        database.insertRowsOnTables();
-        database.closeConnection();
-    }*/
 }

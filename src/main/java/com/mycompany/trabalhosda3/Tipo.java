@@ -15,7 +15,7 @@ public abstract class Tipo {
     
     protected String mensagemOperacao; 
 
-
+    //Ao instância cria os processo (Gerente, Vendedor ou Servidor)
     public Tipo(String porta, String nome, String identificador) {
         this.porta = porta;
         this.nome = nome;
@@ -24,7 +24,7 @@ public abstract class Tipo {
         Processos.getInstance().importaArquivoConfiguracao(porta, nome, identificador);
     }
 
-    //Possibilita receber mensagens 
+    //Inicia um servidorSocket, possibilitando receber mensagens ou servidor/servidorTemporário
     protected void iniciarConexao() {
         try {
             serverSocket = new ServidorSocket(Integer.valueOf(this.porta), this.identificador, this.nome);
@@ -37,5 +37,5 @@ public abstract class Tipo {
 
 
     public abstract void run();
-
+    
 }

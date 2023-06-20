@@ -14,8 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author willian
+ * Classe para realizar as operações no banco de dados em relação ao produto
  */
 public class ProdutoService {
    

@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe para realizar as operações no banco de dados em relação ao vendedor
+ */
 public class VendedorService {
 
     public String realizaVenda(String nomeVendedor, String nomeProduto, String dataVenda, Double valorVenda) {
