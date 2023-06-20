@@ -10,10 +10,11 @@ import com.mycompany.trabalhosda3.processos.Vendedor;
 import java.io.File;
 
 public class TrabalhoSDA3 {
-    
+
     /**
      * Cria o processo a depender dos tipos passados no argumento
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         if (args.length != 4) {
@@ -21,19 +22,11 @@ public class TrabalhoSDA3 {
             System.exit(0);
         }
 
-        File arquivoTemporario = new File("banco.db");
-        boolean existe = arquivoTemporario.exists();
-
-        if (!existe) {
-            System.out.println("Iniciando a criação do banco");
-            Database.iniciaBancoDados();
-        }
-
         String tipo = args[0];
         String nome = args[1];
         String identificador = args[2];
         String porta = args[3];
-        System.out.println("Olá, eu sou o processo do tipo '" + tipo + "' nome '" + nome + "' com o identificador '" + identificador +"'");
+        System.out.println("Olá, eu sou o processo do tipo '" + tipo + "' nome '" + nome + "' com o identificador '" + identificador + "'");
 
         switch (tipo) {
             case "vendedor":
@@ -48,6 +41,15 @@ public class TrabalhoSDA3 {
             case "servidor":
                 Servidor servidor = new Servidor(porta, nome, identificador);
                 servidor.run();
+
+                File arquivoTemporario = new File("banco.db");
+                boolean existe = arquivoTemporario.exists();
+
+                if (!existe) {
+                    System.out.println("Iniciando a criação do banco");
+                    Database.iniciaBancoDados();
+                }
+                
                 break;
             default:
                 System.out.println("Tipo não válido!");
