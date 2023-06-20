@@ -28,6 +28,7 @@ public class Database {
         try {
             if (Database.uniqueInstance != null) {
                 uniqueInstance.close();
+                uniqueInstance = null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, "SQLException", ex);
@@ -106,7 +107,6 @@ public class Database {
         Database database = new Database();
         database.criaTabelas();
         database.insereRegistros();
-        database.closeConnection();
     }
 
 }

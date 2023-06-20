@@ -33,7 +33,7 @@ public class TrabalhoSDA3 {
         String nome = args[1];
         String identificador = args[2];
         String porta = args[3];
-        System.out.println("Olá, eu sou o processo do tipo " + tipo + " com o identificador " + nome);
+        System.out.println("Olá, eu sou o processo do tipo '" + tipo + "' nome '" + nome + "' com o identificador '" + identificador +"'");
 
         switch (tipo) {
             case "vendedor":

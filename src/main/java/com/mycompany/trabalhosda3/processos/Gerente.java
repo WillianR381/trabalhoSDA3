@@ -23,6 +23,7 @@ public class Gerente extends Tipo {
         mensagemOperacao = "busca";
     }
 
+    @Override
     public void run() {
         this.iniciarConexao();
         while (true) {
