@@ -4,12 +4,7 @@
  */
 package com.mycompany.trabalhosda3.utils;
 
-/**
- *
- * @author willian
- */
 public class Impressao {
-    
     
     public static void noTerminal(String stringParaImprimir){
         if(stringParaImprimir == null) return;

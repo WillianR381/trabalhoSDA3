@@ -4,10 +4,6 @@
  */
 package com.mycompany.trabalhosda3.utils;
 
-/**
- *
- * @author willian
- */
 public class ValorMonetario {
     
     public static String formatar(Double valor){

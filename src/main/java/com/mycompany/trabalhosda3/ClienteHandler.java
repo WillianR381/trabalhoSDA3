@@ -25,7 +25,10 @@ public class ClienteHandler implements Runnable {
         this.identificador = identificador;
         this.nome = nome;
     }
-
+    
+    /**
+     * Método executado ao criar nova thread presente no Servidor socket,  retorna ao clientSocket a operação desejada na requisição
+     */
     @Override
     public void run() {
         BufferedReader in = null;
@@ -37,9 +40,15 @@ public class ClienteHandler implements Runnable {
 
             String resposta = in.readLine();
             
+            /*
+             * Retorna "ok" como resposta 
+             */
             if (resposta.equals("ping"))  {
                 out.println("ok");
             } else if (resposta.equals("venda")) {
+                /*
+                 * Área para realizar venda (Vendedor)
+                 */
                 String mensagem = "Digite <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda> exemplo: Carlos Arroz 01-06-2023- 333.30 ";
                 out.println(mensagem);
 
@@ -58,6 +67,11 @@ public class ClienteHandler implements Runnable {
                 String nomeVendedor = variaveisEntrada[0].toLowerCase();
                 String nomeProduto = variaveisEntrada[1].toLowerCase();
                 String dataVenda = variaveisEntrada[2];
+                
+                if(! Data.validaData(dataVenda)){
+                    throw new IllegalArgumentException("Erro - Data inválida");
+                }
+                
                 Double valorVenda = Double.valueOf(variaveisEntrada[3]);
                 dataVenda = Data.formataParaAnoMesDia(dataVenda);
                 
@@ -66,6 +80,9 @@ public class ClienteHandler implements Runnable {
                 out.println(mensagem);
 
             } else if (resposta.equals("busca")) {
+                /*
+                 *  Área para realizar busca (Gerente)
+                 */
                 String mensagem = "Digite: 1 <nomeVendedor> - Buscar o total de vendas de um vendedor ex: 1 Carlos <novaLinha>"
                         + "Digite: 2 <nomeProduto> - Buscar o total de vendas de um produto ex: 2 Arroz <novaLinha>"
                         + "Digite: 3 <dataInicial> <dataFinal> - Buscar o total de vendas dos produtos por periodo ex: 3 02-02-2023 05-05-2023 <novaLinha>"
@@ -116,7 +133,11 @@ public class ClienteHandler implements Runnable {
 
                         String dataInicial = variaveisEntrada[1];
                         String dataFinal = variaveisEntrada[2];
-
+                        
+                        if(! Data.validaData(dataInicial) || !Data.validaData(dataFinal)){
+                            throw new IllegalArgumentException("Erro - Data inválida");
+                        }
+                        
                         ProdutoService produtoService1 = new ProdutoService();
                         dataInicial = Data.formataParaAnoMesDia(dataInicial);
                         dataFinal = Data.formataParaAnoMesDia(dataFinal);
@@ -145,16 +166,28 @@ public class ClienteHandler implements Runnable {
                 }
                 out.println(mensagem);
             } else if (resposta.equals("iniciaEleicao")) {
+                /**
+                 * Atribui o valor True a váriavel eleição 
+                 */
                 System.out.println("Eleição Iniciada");
                 Eleicao.getInstance().setEleicao(true);
 
             } else if (resposta.equals("verificaProcessoComIdentificadorMaior")) {
+                /**
+                 * Envia o meu identificador para processo que realiza a eleição
+                 */
                 out.println(this.identificador);
                 
             }  else if (resposta.equals("manipulaProcessoComIdentificadorMaior")) {
+                /**
+                 * Assume a eleição e tenta eleger-se como líder
+                 */
                 Eleicao.getInstance().verificaProcessoComIdentificadorMaior();
 
             }else if (resposta.equals("novoLider")) {
+                /**
+                 * Recebe o Identificador do líder elegido e atribui na váriavel líder para utilizá-lo como servidor tempórario
+                 */
                 Integer identificadorLider = Integer.valueOf(in.readLine());
                
                 Processo lider = Processos.getInstance().pegaProcessoPeloIdentificador(identificadorLider);
@@ -163,6 +196,9 @@ public class ClienteHandler implements Runnable {
                  System.out.println("Novo lider é :" + lider.getNome() + " com identificador :" + lider.getIdentificador());
 
             } else if (resposta.equals("encerraEleicao")) {
+                /**
+                 * Recebe a notificação que a eleição encerrou, atribuindo false a váriavel de eleição 
+                 */
                 System.out.println("Eleição encerrada");
                 Eleicao.getInstance().setEleicao(false);
 
