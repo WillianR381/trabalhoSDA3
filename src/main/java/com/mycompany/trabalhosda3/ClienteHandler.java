@@ -46,38 +46,42 @@ public class ClienteHandler implements Runnable {
             if (resposta.equals("ping"))  {
                 out.println("ok");
             } else if (resposta.equals("venda")) {
+                try{
                 /*
                  * Área para realizar venda (Vendedor)
                  */
-                String mensagem = "Digite <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda> exemplo: Carlos Arroz 01-06-2023- 333.30 ";
-                out.println(mensagem);
+                    String mensagem = "Digite <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda> exemplo: Carlos Arroz 01-06-2023- 333.30 ";
+                    out.println(mensagem);
 
-                resposta = in.readLine();
-                if (resposta == null) {
-                    throw new IllegalArgumentException("Erro - Operação inválida");
+                    resposta = in.readLine();
+                    if (resposta == null) {
+                        throw new IllegalArgumentException("Erro - Operação inválida");
+                    }
+
+                    System.out.println("Venda recebida: " + resposta);
+
+                    String[] variaveisEntrada = resposta.split(" ");
+                    if (variaveisEntrada.length < 4) {
+                        throw new IllegalArgumentException("Erro - Preencher com <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda>");
+                    }
+
+                    String nomeVendedor = variaveisEntrada[0].toLowerCase();
+                    String nomeProduto = variaveisEntrada[1].toLowerCase();
+                    String dataVenda = variaveisEntrada[2];
+
+                    if(! Data.validaData(dataVenda)){
+                        throw new IllegalArgumentException("Erro - Data inválida");
+                    }
+
+                    Double valorVenda = Double.valueOf(variaveisEntrada[3]);
+                    dataVenda = Data.formataParaAnoMesDia(dataVenda);
+
+                    VendedorService vendedorService = new VendedorService();
+                    mensagem = vendedorService.realizaVenda(nomeVendedor, nomeProduto, dataVenda, valorVenda);
+                    out.println(mensagem);
+                }catch(NumberFormatException e){
+                    throw new IllegalArgumentException("Erro - Valor da venda inválida");
                 }
-
-                System.out.println("Venda recebida: " + resposta);
-
-                String[] variaveisEntrada = resposta.split(" ");
-                if (variaveisEntrada.length < 4) {
-                    throw new IllegalArgumentException("Erro - Preencher com <nomeVendedor> <nomeProduto> <dataVenda> <valorVenda>");
-                }
-
-                String nomeVendedor = variaveisEntrada[0].toLowerCase();
-                String nomeProduto = variaveisEntrada[1].toLowerCase();
-                String dataVenda = variaveisEntrada[2];
-                
-                if(! Data.validaData(dataVenda)){
-                    throw new IllegalArgumentException("Erro - Data inválida");
-                }
-                
-                Double valorVenda = Double.valueOf(variaveisEntrada[3]);
-                dataVenda = Data.formataParaAnoMesDia(dataVenda);
-                
-                VendedorService vendedorService = new VendedorService();
-                mensagem = vendedorService.realizaVenda(nomeVendedor, nomeProduto, dataVenda, valorVenda);
-                out.println(mensagem);
 
             } else if (resposta.equals("busca")) {
                 /*

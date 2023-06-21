@@ -36,22 +36,34 @@ public class Data {
         }
         return dataFormatada;
     }
-    
-    public static boolean validaData(String data){
-        
-        System.out.println(data);
-        String[] dataNaoFormatado = data.split("-");
-        
-        Integer dia = Integer.valueOf(dataNaoFormatado[0]);
-        Integer mes = Integer.valueOf(dataNaoFormatado[1]);
-        Integer ano =  Integer.valueOf(dataNaoFormatado[2]);
-        
-        if( ano >= 1900 && ano <= 2023 &&
-            mes > 0 && mes <= 12 &&
-            dia > 0 && dia <= 31){
-            return true;
+
+    public static boolean validaData(String data) {
+        try {
+
+            if (!data.contains("-")) {
+                return false;
+            }
+
+            String[] dataNaoFormatado = data.split("-");
+
+            if (dataNaoFormatado.length != 3) {
+                return false;
+            }
+
+            Integer dia = Integer.valueOf(dataNaoFormatado[0]);
+            Integer mes = Integer.valueOf(dataNaoFormatado[1]);
+            Integer ano = Integer.valueOf(dataNaoFormatado[2]);
+
+            if (ano >= 1900 && ano <= 2023
+                    && mes > 0 && mes <= 12
+                    && dia > 0 && dia <= 31) {
+                return true;
+            }
+
+           
+        } catch (NumberFormatException ex) {
+            Logger.getLogger(Data.class.getName()).log(Level.SEVERE, "Data inválida", ex);
         }
-        
-        return false;
+         return false;
     }
 }

@@ -110,8 +110,15 @@ public class VendedorService {
                 return resposta;
             }
             
-            String totalVendas = ValorMonetario.formatar(rs.getDouble("total_vendas"));
-            resposta = "Vendedor: " + rs.getString("vendedor") + " tem o total de vendas de  " + totalVendas ;
+            String nomeVendedor2  = rs.getString("vendedor");
+            Double totalVendasNaoFormatado = rs.getDouble("total_vendas");
+            
+            if(nomeVendedor2 == null || totalVendasNaoFormatado == null  ){
+                throw  new Exception("Produto não encontrado");
+            }
+            
+            String totalVendas = ValorMonetario.formatar(totalVendasNaoFormatado);
+            resposta = "Vendedor: " + nomeVendedor2 + " tem o total de vendas de  " + totalVendas ;
             
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoSDA3.class.getName()).log(Level.SEVERE, null, ex);
