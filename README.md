@@ -1,7 +1,7 @@
 # trabalhoSDA3
 
 ## 📁 Descrição do projeto
-Projeto para consolidar o conhecimento sobre os assusntos abordados nas aulas de Sistemas distribuidos, no caso estamos criando uma aplicação na arquitetura cliente-servidor,utilizamos o sockets para que os processos se comunicam através de mensagens, essa comunicação é feita através da rede local, implementação a detecção de falha da comunicação com servidor, . 
+Projeto desenvolvido para consolidar o conhecimento sobre os assuntos abordados nas aulas de Sistemas distribuidos, no caso estamos criando uma aplicação na arquitetura cliente-servidor, utilizamos o sockets para que os processos se comunicam através de mensagens, essa comunicação é feita através da rede local, implementação a detecção de falha da comunicação com servidor, . 
 
 ## Requisitos
 - Necessário ter o Java instalado na máquina ,utilizamos a versão 8 utilizada no desenvolvimento. Versão do jdk"1.8.0_362".
