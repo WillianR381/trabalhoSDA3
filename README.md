@@ -1,21 +1,20 @@
-# Em construção 
+# trabalhoSDA3
 
-# A fazer
-- Terminar o relátorio
-- Fazer vídeo tutorial de como iniciar o projeto
-- Fazer vídeo rodando o projeto e mostrando ele rodando 
+## 📁 Descrição do projeto
+Projeto para consolidar o conhecimento sobre os assusntos abordados nas aulas de Sistemas distribuidos, no caso estamos criando uma aplicação na arquitetura cliente-servidor,utilizamos o sockets para que os processos se comunicam através de mensagens, essa comunicação é feita através da rede local, implementação a detecção de falha da comunicação com servidor, . 
 
-# Requisitos
+## Requisitos
 - Necessário o Java instalado na máquina , no qual a versão 8 utilizada no desenvolvimento. Versão do jdk"1.8.0_362".
 - Os shell scripts só foram testadas nas distros linux. No caso  Ubuntu 22.04 .
 
-# Iniciar o projeto
-Gravamos um [Vídeo](https://drive.google.com/file/d/14DNM64LpQYE9q8KR5HHowkntDMpV7gh0/view) realizando as etapas abaixo :
+# 🛠️ Abrir e rodar o projeto
+Caso queira gravamos um [Vídeo](https://drive.google.com/file/d/14DNM64LpQYE9q8KR5HHowkntDMpV7gh0/view) realizando as etapas abaixo :
 - Clonar o repositório
 - Abrir na pasta raiz do projeto
-- `cd 
-- Executar o script para iniciar os processos na pasta `./iniciaTodosProcessos.sh `. Será aberto 5 processos, 1 Servidor, 2 gerentes e 2 vendedores. 
-- Caso queira derrubar o servidor e inicia-lo basta rodar o comando `./iniciaServidor.sh`
+- `cd scriptsIniciacaoLinux`
+- Para iniciar o projeto basta executar o script `./iniciaTodosProcessos.sh`. Será aberto 5 processos : 1 Servidor, 2 gerentes e 2 vendedores.
+- Para matar o servidor basta clicar no ícone 'X' no terminal referente ao processo **servidor**, com o servidor finalizado, basta selecionar um dos processo, digitar uma mensagem de operação, ou digitar enter, o processo vai verificar que o servidor não tá respondendo e iniciando a eleição do líder para assumir o papel de servidor principal.
+- Escrevemos um script para iniciar o servidor novamente, basta executar `iniciaServidor.sh`   
 Gravamos um [Vídeo Testando o Projeto](https://drive.google.com/file/d/1QdLnvW0hrELT_wSSOe0t58Mk5pI0XbmP/view)
 
 # Entidades cadastradas 
