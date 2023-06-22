@@ -17,6 +17,7 @@ Caso queira gravamos um [Vídeo](https://drive.google.com/file/d/14DNM64LpQYE9q8
 - Para iniciar o projeto basta executar o script `./iniciaTodosProcessos.sh`. Será aberto 5 processos : 1 Servidor, 2 gerentes e 2 vendedores.
 - Para matar o servidor basta clicar no ícone 'X' no terminal referente ao processo **servidor**, com o servidor finalizado, basta selecionar um dos processo, digitar uma mensagem de operação, ou digitar enter, o processo vai verificar que o servidor não tá respondendo e iniciando a eleição do líder para assumir o papel de servidor principal.
 - Escrevemos um script para iniciar o servidor novamente, basta executar `iniciaServidor.sh`   
+
 Gravamos um [Vídeo](https://drive.google.com/file/d/1QdLnvW0hrELT_wSSOe0t58Mk5pI0XbmP/view) testando o projeto
 
 ### 🪟 Windows:
