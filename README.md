@@ -5,8 +5,7 @@ Projeto desenvolvido para consolidar o conhecimento sobre os assuntos abordados 
 
 ## Requisitos
 - Necessário ter o Java instalado na máquina ,utilizamos a versão 8 utilizada no desenvolvimento. Versão do jdk"1.8.0_362".
-- Caso queira 
-- Os bat
+- Git ( caso desejável ) 
 
 ## 🛠️ Abrir e rodar o projeto
 Caso queira gravamos um [Vídeo](https://drive.google.com/file/d/14DNM64LpQYE9q8KR5HHowkntDMpV7gh0/view) realizando as etapas abaixo :
@@ -28,7 +27,7 @@ Gravamos um [Vídeo Testando o Projeto](https://drive.google.com/file/d/1QdLnvW0
 - Escrevemos um script para iniciar o servidor novamente, basta executar (2 cliques) o bat `iniciaServidor.bat`   
 
 # Entidades cadastradas 
-As operações de venda e busca só podem ocorrer utilizando os produtos e vendedores cadastrados no banco (Podendo ser visto na classe [Database](https://github.com/WillianR381/trabalhoSDA3/blob/main/src/main/java/com/mycompany/trabalhosda3/config/Database.java#L80), no caso são:
+As operações de venda e busca só podem ocorrer utilizando os produtos e vendedores cadastrados no banco (Podendo ser visto na classe [Database](https://github.com/WillianR381/trabalhoSDA3/blob/main/src/main/java/com/mycompany/trabalhosda3/config/Database.java#L80) ), no caso são:
 
 ## Produtos
 - arroz
