@@ -21,7 +21,7 @@ Caso queira gravamos um [Vídeo](https://drive.google.com/file/d/14DNM64LpQYE9q8
 Gravamos um [Vídeo](https://drive.google.com/file/d/1QdLnvW0hrELT_wSSOe0t58Mk5pI0XbmP/view) testando o projeto (Linux)
 
 ### 🪟 Windows:
-Caso queira gravamos um [Vídeo]() realizando as etapas abaixo (Windows) :
+Caso queira gravamos um [Vídeo](https://drive.google.com/file/d/12iaFmeOC3SQzt1QBNykNF38-a4ru_r_A/view) realizando as etapas abaixo (Windows) :
 - Clonar o repositório
 - Abrir na pasta raiz do projeto
 - Acessar a pasta `scriptsIniciacaoWindows`
@@ -29,7 +29,7 @@ Caso queira gravamos um [Vídeo]() realizando as etapas abaixo (Windows) :
 -  Para matar o servidor basta clicar no ícone 'X' no terminal referente ao processo **servidor**, com o servidor finalizado, basta selecionar um dos processo, digitar uma mensagem de operação, ou digitar enter, o processo vai verificar que o servidor não tá respondendo e iniciando a eleição do líder para assumir o papel de servidor principal.
 - Escrevemos um script para iniciar o servidor novamente, basta executar (2 cliques) o bat `iniciaServidor.bat`
 
-Gravamos um [Vídeo]() testando o projeto (Windows)
+Gravamos um [Vídeo](https://drive.google.com/file/d/12iaFmeOC3SQzt1QBNykNF38-a4ru_r_A/view) testando o projeto (Windows)
 
 ## Entidades cadastradas 
 As operações de venda e busca só podem ocorrer utilizando os produtos e vendedores cadastrados no banco (Podendo ser visto na classe [Database](https://github.com/WillianR381/trabalhoSDA3/blob/main/src/main/java/com/mycompany/trabalhosda3/config/Database.java#L80) ), no caso são:
